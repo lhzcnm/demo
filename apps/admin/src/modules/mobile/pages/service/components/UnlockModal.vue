@@ -2,20 +2,28 @@
 import UnlockForm from './UnlockForm.vue'
 import { createUnlock, updateUnlock } from '@/api/services'
 import { UNLOCK_STORE } from '../utils'
+import type { Unlock, UnlockCreateParams } from '@/inters/services/unlock.ts'
 
 const store = inject(UNLOCK_STORE)!
 const formRef = useTemplateRef('formRef')
 
 async function handleCreate() {
-  const data = await createUnlock(store.formBase)
+  const body: UnlockCreateParams = {
+    ...store.formBase,
+    operator: store.formBase.operator.replace(/；/g, ';')
+  }
+
+  const data = await createUnlock(body)
   store.unlocks.push(data)
   store.visibleBase = false
+  // store.refresh = !store.refresh
 }
 
 async function handleUpdate() {
-  const body = {
+  const body: Unlock = {
     ...store.formBase,
     id: store.unlocks[store.index!].id,
+    operator: store.formBase.operator.replace(/；/g, ';')
   }
 
   await updateUnlock(body)

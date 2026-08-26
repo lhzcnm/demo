@@ -52,6 +52,8 @@ export interface UnlockStore {
   visibleBase: boolean
   visibleConvert: boolean
 
+  refresh: boolean
+
   index: number | undefined
 }
 

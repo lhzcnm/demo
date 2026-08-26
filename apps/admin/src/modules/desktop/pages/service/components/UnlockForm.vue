@@ -27,8 +27,8 @@ defineExpose({
       <XInput v-model="form.name" placeholder="服务名称" />
     </XFormItem>
 
-    <XFormItem label="触发关键字" field="operator">
-      <XInput v-model="form.operator" placeholder="触发关键字" />
+    <XFormItem label="触发关键字(多个关键字可使用';'分割)" field="operator">
+      <XInput v-model="form.operator" placeholder="触发关键字, 多个关键字使用';'分割" />
     </XFormItem>
   </XForm>
 </template>

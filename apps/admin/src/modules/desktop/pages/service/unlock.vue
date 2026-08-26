@@ -16,10 +16,19 @@ const store: UnlockStore = reactive({
   visibleBase: false,
   visibleConvert: false,
 
+  refresh: false,
+
   index: undefined,
 })
 
 provide(UNLOCK_STORE, store)
+
+watch(
+  () => store.refresh,
+  async () => {
+    await getList()
+  }
+)
 
 await getList()
 async function getList() {

@@ -19,7 +19,7 @@ export const columns: XColDef<Unlock> = [
   {
     key: 'operator',
     title: '触发关键字',
-    width: 154,
+    minWidth: 154,
   },
   {
     key: 'convertCode',
