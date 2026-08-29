@@ -10,11 +10,14 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'paymentId',
     title: '充值ID',
+    isDrag: true,
     width: 88,
   },
   {
     key: 'userId',
     title: '用户ID',
+    isDrag: true,
+    isFilter: true,
     width: 88,
     render(value) {
       return h('a', {
@@ -28,16 +31,19 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'amount',
     title: '账单金额',
+    isDrag: true,
     width: 108,
   },
   {
     key: 'credits',
     title: '到账金额',
+    isDrag: true,
     width: 108,
   },
   {
     key: 'byAdmin',
     title: '管理员添加',
+    isDrag: true,
     width: 98,
     render: (value) => {
       return value ? 'YES' : 'NO'
@@ -46,6 +52,12 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'paymentMethod',
     title: '支付方式',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      const item = PAYMENT_METHOD_MAP[row.paymentMethod]
+      return item.label
+    },
     width: 108,
     render: (value) => {
       const item = PAYMENT_METHOD_MAP[value]
@@ -55,6 +67,7 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'paymentStatus',
     title: '支付状态',
+    isDrag: true,
     width: 108,
     render: (value) => {
       return h(XTag, PAYMENT_STATUS_MAP[value])
@@ -63,6 +76,7 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'shopId',
     title: '充值类型',
+    isDrag: true,
     width: 128,
     render: (value, row) => {
       const packageStore = usePackageStore()
@@ -74,16 +88,19 @@ export const columns: XColDef<Recharge> = [
   {
     key: 'paymentDtTm',
     title: '支付时间',
+    isDrag: true,
     width: 180,
   },
   {
     key: 'transactionId',
     title: '交易ID',
+    isDrag: true,
     minWidth: 280,
   },
   {
     key: 'comments',
     title: '备注',
+    isDrag: true,
     minWidth: 180,
   },
   {

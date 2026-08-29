@@ -10,26 +10,31 @@ export const columns: XColDef<Intercept> = [
   {
     key: 'id',
     title: '拦截ID',
+    isDrag: true,
     width: 72,
   },
   {
     key: 'ip',
     title: '拦截IP',
+    isDrag: true,
     width: 128,
   },
   {
     key: 'createTime',
     title: '创建时间',
+    isDrag: true,
     width: 180,
   },
   {
     key: 'expireTime',
     title: '过期时间',
+    isDrag: true,
     width: 180,
   },
   {
     key: 'comments',
     title: '备注',
+    isDrag: true,
     minWidth: 280,
   },
   {

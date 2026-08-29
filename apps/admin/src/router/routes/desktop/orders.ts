@@ -11,11 +11,11 @@ const orders: RouteRecordRaw[] = [
     name: 'OrdersVerify',
     component: () => import('@desktop/pages/orders/verify.vue'),
   },
-  {
-    path: 'orders/mall',
-    name: 'OrdersMall',
-    component: () => import('@desktop/pages/orders/mall.vue'),
-  },
+  // {
+  //   path: 'orders/mall',
+  //   name: 'OrdersMall',
+  //   component: () => import('@desktop/pages/orders/mall.vue'),
+  // },
 ]
 
 export default orders

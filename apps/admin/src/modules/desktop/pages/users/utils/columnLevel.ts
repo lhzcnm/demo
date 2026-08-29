@@ -14,21 +14,25 @@ export const columns: XColDef<Level> = [
     key: 'pricePlanId',
     title: '等级ID',
     align: 'center',
+    isDrag: true,
     width: 64,
   },
   {
     key: 'pricePlan',
     title: '等级名称(中文)',
+    isDrag: true,
     minWidth: 128,
   },
   {
     key: 'pricePlanLocal',
     title: '等级名称(英文)',
+    isDrag: true,
     minWidth: 128,
   },
   {
     key: 'thresholdAmount',
     title: '升级条件',
+    isDrag: true,
     width: 158,
 
     render(value, row) {
@@ -47,6 +51,7 @@ export const columns: XColDef<Level> = [
   {
     key: 'accessLevel',
     title: '会员组权限',
+    isDrag: true,
     width: 208,
     render(value) {
       const { label } = ACCESS_LEVEL_MAP[value as ACCESS_LEVEL]
@@ -56,6 +61,7 @@ export const columns: XColDef<Level> = [
   {
     key: 'enableDevice',
     title: '启用设备页面',
+    isDrag: true,
     width: 128,
     render(value, row) {
       return h(XSwitch, {
@@ -78,6 +84,7 @@ export const columns: XColDef<Level> = [
   {
     key: 'disablePricePlan',
     title: '是否禁用',
+    isDrag: true,
     width: 128,
     render(value, row) {
       return h(XSwitch, {

@@ -11,11 +11,13 @@ export const columns: XColDef<User> = [
   {
     key: 'userId',
     title: 'ID',
+    isDrag: true,
     width: 72,
   },
   {
     key: 'headImgUrl',
     title: '头像',
+    isDrag: true,
     width: 54,
     render(value) {
       const mode = import.meta.env.VITE_APP_MODE
@@ -30,16 +32,19 @@ export const columns: XColDef<User> = [
   {
     key: 'userName',
     title: '账号',
+    isDrag: true,
     width: 128,
   },
   {
     key: 'nickName',
     title: '昵称',
+    isDrag: true,
     width: 154,
   },
   {
     key: 'pricePlanId',
     title: '会员等级',
+    isDrag: true,
     width: 108,
     render(value) {
       const levelStore = useLevelStore()
@@ -50,6 +55,7 @@ export const columns: XColDef<User> = [
   {
     key: 'role',
     title: '角色',
+    isDrag: true,
     width: 108,
     render(value) {
       return USER_ROLE_MAP[value].label
@@ -58,11 +64,13 @@ export const columns: XColDef<User> = [
   {
     key: 'credits',
     title: '积分',
+    isDrag: true,
     width: 88,
   },
   {
     key: 'voucherCredits',
     title: '赠送积分',
+    isDrag: true,
     width: 158,
     render: (_, row) => {
       return h(
@@ -78,16 +86,19 @@ export const columns: XColDef<User> = [
   {
     key: 'weiXinOpenid',
     title: '微信ID',
+    isDrag: true,
     minWidth: 320,
   },
   {
     key: 'addedAt',
     title: '注册时间',
+    isDrag: true,
     width: 180,
   },
   {
     key: 'loginAction',
     title: '登录前台',
+    isDrag: true,
     width: 128,
     render(_, row) {
       const iStore = useSystemStore()
@@ -120,6 +131,7 @@ export const columns: XColDef<User> = [
   {
     key: 'showApi',
     title: '是否显示ApiKey',
+    isDrag: true,
     width: 128,
     render(_, row) {
       return h(XSwitch, {
@@ -144,6 +156,7 @@ export const columns: XColDef<User> = [
   {
     key: 'heartbeatEnabled',
     title: '心跳检测',
+    isDrag: true,
     width: 128,
     render(_, row) {
       return h(XSwitch, {
@@ -167,6 +180,7 @@ export const columns: XColDef<User> = [
   {
     key: 'disableUser',
     title: '禁用',
+    isDrag: true,
     width: 128,
     render(value, row) {
       return h(XSwitch, {

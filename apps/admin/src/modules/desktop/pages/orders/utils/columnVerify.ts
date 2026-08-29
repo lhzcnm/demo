@@ -5,15 +5,29 @@ import { type XColDef, XTextarea } from '@3un/ui'
 import { ORDER_STATUS, SUBMIT_METHOD_MAP } from '@3un/utils'
 import { h } from 'vue'
 
+const serviceStore = useServiceStore()
+
 export const columns: XColDef<Order> = [
   {
     key: 'codeId',
     title: '订单号',
+    isDrag: true,
     width: 100,
   },
   {
     key: 'packageId',
     title: '服务',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      const service = serviceStore.itemMap.get(row.packageId)
+
+      if (service) {
+        return `${service.packageId} - ${service.packageTitle}`
+      }
+
+      return `${row.packageId}`
+    },
     width: 225,
     render(value) {
       const serviceStore = useServiceStore()
@@ -24,6 +38,8 @@ export const columns: XColDef<Order> = [
   {
     key: 'userId',
     title: '用户',
+    isDrag: true,
+    isFilter: true,
     width: 88,
     render(value) {
       return h('a', {
@@ -37,16 +53,20 @@ export const columns: XColDef<Order> = [
   {
     key: 'credits',
     title: '积分',
+    isDrag: true,
     width: 78,
   },
   {
     key: 'imeiNo',
     title: 'IMEI/SN',
+    isDrag: true,
+    isFilter: true,
     width: 154,
   },
   {
     key: 'code',
     title: '订单结果',
+    isDrag: true,
     minWidth: 280,
     render(value) {
       return h(
@@ -60,6 +80,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'submitMethod',
     title: '提交方式',
+    isDrag: true,
     width: 100,
     render(value) {
       return SUBMIT_METHOD_MAP[value].label
@@ -68,15 +89,16 @@ export const columns: XColDef<Order> = [
   {
     key: 'requestedAt',
     title: '耗时',
+    isDrag: true,
     width: 88,
-    render(value, row) {
+    render(_, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
       if (whiteList.includes(row.codeStatusId)) {
         return '--'
       }
 
       const updateTimeDate = new Date(row.updateTime).getTime()
-      const requestedAtDate = new Date(value).getTime()
+      const requestedAtDate = new Date(row.requestUpTime).getTime()
       const diffTime = updateTimeDate - requestedAtDate
       const diff = Math.round(diffTime / 1000)
       return diff < 1 ? '<1s' : `${diff}s`
@@ -85,6 +107,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'updateTime',
     title: '日期',
+    isDrag: true,
     width: 164,
     render(value, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]

@@ -10,4 +10,5 @@ export interface UpstreamStore {
   visibleBase: boolean
 
   index: number | undefined
+  refresh: boolean
 }

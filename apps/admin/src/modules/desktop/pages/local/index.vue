@@ -99,9 +99,9 @@ onMounted(() => {
     <section class="p-3 pb-0">
       <XTable ref="tableRef" :columns="localListTable" :data="store.localList" class="border h-[calc(100vh-8.75rem)]" />
     </section>
+    
+    <SearchDialog />
+    <CreateDialog />
+    <UpdateDialog />
   </div>
-
-  <SearchDialog />
-  <CreateDialog />
-  <UpdateDialog />
 </template>

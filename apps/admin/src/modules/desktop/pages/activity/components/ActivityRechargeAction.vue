@@ -16,18 +16,18 @@ const { row } = defineProps<ActivityRechargeActionProps>()
 
 const store = inject(ACTIVITY_RECHARGE_STORE)!
 
-const disabled = computed(() => !!row.voucherCode)
+// const disabled = computed(() => !!row.voucherCode)
 
-async function openCreate() {
-  store.formCreate = zActivyVoucherForm.parse({
-    userId: row.userId,
-    paymentId: row.paymentId,
-    type: VOUCHER_TYPE.QUERY,
-  })
+// async function openCreate() {
+//   store.formCreate = zActivyVoucherForm.parse({
+//     userId: row.userId,
+//     paymentId: row.paymentId,
+//     type: VOUCHER_TYPE.QUERY,
+//   })
 
-  store.payment = zActivyRecharge.parse(row)
-  store.visibleCreate = true
-}
+//   store.payment = zActivyRecharge.parse(row)
+//   store.visibleCreate = true
+// }
 
 async function handleDelete() {
   if (!await xconfirm("是否确认删除该记录")) return
@@ -41,12 +41,12 @@ async function handleDelete() {
 
 <template>
   <div class="flex gap-2">
-    <XButton
+    <!-- <XButton
       :disabled="disabled"
       label="生成积分券"
       size="sm" icon="lucide:ticket"
       @click="openCreate"
-    />
+    /> -->
     <XButton
       color="danger"
       label="删除"

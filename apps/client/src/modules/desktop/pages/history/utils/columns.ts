@@ -11,10 +11,22 @@ const localStore = useLocalStore()
 
 export function getOrderColumns(): XColDef<Order> {
   return [
-    { key: 'id', title: 'ID', width: 98 },
+    { key: 'id', title: 'ID', width: 98, isDrag: true, },
     {
       key: 'serviceId',
       title: localStore.localData['history_TableHeadServuce'],
+      isDrag: true,
+      isFilter: true,
+      filterRender(row) {
+        const serviceStore = useServiceStore()
+
+        const service = serviceStore.services.get(row.serviceId)
+        if (service) {
+          return `${service.id} - ${service.title}`
+        }
+
+        return ""
+      },
       width: 220,
       render: (value) => {
         const service = serviceStore.services.get(value)
@@ -23,12 +35,19 @@ export function getOrderColumns(): XColDef<Order> {
           : localStore.localData['history_NotFount']
       },
     },
-    { key: 'imei', title: 'IMEI/SN', width: 158 },
-    { key: 'credits', title: localStore.localData['history_TableHeadPoints'], width: 58 },
+    {
+      key: 'imei',
+      title: 'IMEI/SN',
+      width: 158,
+      isDrag: true,
+      isFilter: true,
+    },
+    { key: 'credits', title: localStore.localData['history_TableHeadPoints'], width: 58, isDrag: true, },
     {
       key: 'status',
       title: localStore.localData['history_TableHeadOrderStatus'],
       width: 108,
+      isDrag: true,
       render: (value: ORDER_STATUS) => {
         return h(XTag, {
           label: localStore.localData[ORDER_STATUS_MAP[value].key!],
@@ -39,6 +58,7 @@ export function getOrderColumns(): XColDef<Order> {
     {
       key: 'verify',
       title: localStore.localData['history_TableHeadVerifyStatus'],
+      isDrag: true,
       width: 108,
       render(value: ORDER_VERIFY) {
         return h(XTag, {
@@ -50,13 +70,14 @@ export function getOrderColumns(): XColDef<Order> {
     {
       key: 'result',
       title: localStore.localData['history_TableHeadResult'],
+      isDrag: true,
       minWidth: 320,
       render(value: string) {
         return h('div', { innerHTML: value })
       }
     },
-    { key: 'createTime', title: localStore.localData['history_TableHeadSubmitTime'], width: 148, thClassName: 'text-center' },
-    { key: 'remark', title: localStore.localData['history_TableHeadRemarks'], width: 168, },
+    { key: 'createTime', title: localStore.localData['history_TableHeadSubmitTime'], width: 148, thClassName: 'text-center', isDrag: true },
+    { key: 'remark', title: localStore.localData['history_TableHeadRemarks'], width: 168, isDrag: true },
     {
       key: 'action',
       title: localStore.localData['history_TableHeadOperation'],

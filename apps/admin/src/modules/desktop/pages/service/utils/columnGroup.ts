@@ -10,22 +10,26 @@ export const columns: XColDef<ServiceGroup> = [
   {
     key: 'categoryId',
     title: '服务组ID',
+    isDrag: true,
     width: 88,
   },
   {
     key: 'category',
     title: '服务组名称',
+    isDrag: true,
     minWidth: 220,
   },
   {
     key: 'categoryLocal',
     title: '服务组名称EN',
+    isDrag: true,
     minWidth: 320,
     cellEmpty: '--',
   },
   {
     key: 'orderBy',
     title: '排序(值越大越靠前)',
+    isDrag: true,
     width: 164,
     render(value, row) {
       return h(XInputNumber, {
@@ -49,6 +53,7 @@ export const columns: XColDef<ServiceGroup> = [
   {
     key: 'disableCategory',
     title: '禁用',
+    isDrag: true,
     width: 98,
     render(value, row) {
       return h(XSwitch, {

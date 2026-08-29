@@ -8,6 +8,7 @@ export const columns: XColDef<UserPaid> = [
   {
     key: "userId",
     title: "ID",
+    isDrag: true,
     width: 72,
     render: (value) => {
       return h(
@@ -23,6 +24,7 @@ export const columns: XColDef<UserPaid> = [
   {
     key: "headImgUrl",
     title: "头像",
+    isDrag: true,
     width: 54,
     render(value) {
       const mode = import.meta.env.VITE_APP_MODE
@@ -37,21 +39,25 @@ export const columns: XColDef<UserPaid> = [
   {
     key: "userName",
     title: "账号",
+    isDrag: true,
     width: 128,
   },
   {
     key: "nickName",
     title: "昵称",
+    isDrag: true,
     width: 154,
   },
   {
     key: "credits",
     title: "积分",
+    isDrag: true,
     width: 88,
   },
   {
     key: "voucherCredits",
     title: "赠送积分",
+    isDrag: true,
     width: 158,
     render: (_, row) => {
       return h("div", { class: "flex flex-col" }, [
@@ -63,16 +69,19 @@ export const columns: XColDef<UserPaid> = [
   {
     key: "weixinOpenId",
     title: "微信ID",
+    isDrag: true,
     minWidth: 320,
   },
   {
     key: "memberExp",
     title: "会员到期时间",
+    isDrag: true,
     width: 180,
   },
   {
     key: "loginAction",
     title: "登录前台",
+    isDrag: true,
     width: 128,
     render(_, row) {
       const iStore = useSystemStore()
@@ -105,6 +114,7 @@ export const columns: XColDef<UserPaid> = [
   {
     key: "remark",
     title: "备注",
+    isDrag: true,
     width: 180,
   },
 ]

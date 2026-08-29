@@ -18,6 +18,7 @@ const store: UpstreamStore = reactive({
   visibleBase: false,
 
   index: undefined,
+  refresh: false,
 })
 
 provide(UPSTREAM_STORE, store)
@@ -25,6 +26,13 @@ provide(UPSTREAM_STORE, store)
 const search = ref('')
 const apiType = ref<API_TYPE | undefined>()
 const ids = ref<number[]>([])
+
+watch(
+  () => store.refresh,
+  async () => {
+    store.upstreams = await getUpstreams()
+  }
+)
 
 const displayUpstreams = computed(() => {
   const searchValue = search.value.trim().toLowerCase()

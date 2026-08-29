@@ -20,8 +20,6 @@ async function updateLocal() {
   } finally {
   }
 }
-
-
 </script>
 
 <template>

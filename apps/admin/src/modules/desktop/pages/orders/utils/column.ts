@@ -5,20 +5,35 @@ import { ORDER_STATUS, ORDER_STATUS_MAP, SUBMIT_METHOD_MAP } from '@3un/utils'
 import { XButton, XTag, type XColDef } from "@3un/ui"
 import { h } from 'vue'
 
+const serviceStore = useServiceStore()
+
 export const columns: XColDef<Order> = [
   {
     key: 'codeId',
     title: '订单号',
+    isDrag: true,
     width: 100,
   },
   {
     key: 'orderIdFromServer',
     title: '上游订单号',
+    isDrag: true,
     width: 100,
   },
   {
     key: 'packageId',
     title: '服务',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      const service = serviceStore.itemMap.get(row.packageId)
+
+      if (service) {
+        return `${service.packageId} - ${service.packageTitle}`
+      }
+
+      return `${row.packageId}`
+    },
     width: 225,
     render(value) {
       const serviceStore = useServiceStore()
@@ -29,6 +44,8 @@ export const columns: XColDef<Order> = [
   {
     key: 'userId',
     title: '用户',
+    isDrag: true,
+    isFilter: true,
     width: 88,
     render(value) {
       return h('a', {
@@ -42,6 +59,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'codeStatusId',
     title: '订单状态',
+    isDrag: true,
     width: 108,
     render(value) {
       return h(XTag, {
@@ -53,6 +71,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'downloaded',
     title: '已经推送',
+    isDrag: true,
     width: 100,
     render(value) {
       return value ? 'YES' : 'NO'
@@ -61,16 +80,20 @@ export const columns: XColDef<Order> = [
   {
     key: 'credits',
     title: '积分',
+    isDrag: true,
     width: 78,
   },
   {
     key: 'imeiNo',
     title: 'IMEI/SN',
+    isDrag: true,
+    isFilter: true,
     width: 154,
   },
   {
     key: 'code',
     title: '订单结果',
+    isDrag: true,
     minWidth: 140,
     render(value) {
       return h('span', { innerHTML: value })
@@ -79,6 +102,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'submitMethod',
     title: '提交方式',
+    isDrag: true,
     width: 100,
     render(value) {
       return SUBMIT_METHOD_MAP[value].label
@@ -87,6 +111,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'costTime',
     title: '上游耗时',
+    isDrag: true,
     width: 88,
     render(_, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
@@ -104,6 +129,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'requestUpTime',
     title: '请求上游时间',
+    isDrag: true,
     width: 168,
     render(_, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
@@ -120,6 +146,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'requestedAt',
     title: '订单创建时间',
+    isDrag: true,
     width: 164,
     // render(value, row) {
     //   const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
@@ -136,6 +163,7 @@ export const columns: XColDef<Order> = [
   {
     key: 'comments',
     title: '备注',
+    isDrag: true,
     width: 120,
   },
   {

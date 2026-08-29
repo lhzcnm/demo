@@ -16,11 +16,19 @@ export const columns: XColDef<Service> = [
   {
     key: 'packageId',
     title: '服务ID',
+    isDrag: true,
     width: 88,
   },
   {
     key: 'categoryId',
     title: '所在服务组',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      const serviceStore = useServiceStore()
+      const group = serviceStore.groupMap.get(row.categoryId)
+      return group ? group.category : '默认服务组'
+    },
     width: 180,
     render: (value) => {
       const serviceStore = useServiceStore()
@@ -31,6 +39,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'tmpTitle',
     title: '服务简称',
+    isDrag: true,
     minWidth: 220,
     edit: {
       trigger: 'dblclick',
@@ -51,6 +60,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'packageTitle',
     title: '服务名称',
+    isDrag: true,
     minWidth: 220,
     edit: {
       trigger: 'dblclick',
@@ -71,6 +81,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'packageTitleLocal',
     title: '服务名称EN',
+    isDrag: true,
     minWidth: 220,
     tdClassName: 'break-words',
     cellEmpty: '-',
@@ -93,6 +104,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'packagePrice',
     title: '服务价格',
+    isDrag: true,
     width: 88,
     edit: {
       trigger: 'dblclick',
@@ -120,6 +132,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'apiId',
     title: '服务 API',
+    isDrag: true,
     width: 200,
     render(value, row) {
       const serviceStore = useServiceStore()
@@ -150,6 +163,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'packageOrderBy',
     title: '排序',
+    isDrag: true,
     width: 128,
     render(value, row) {
       return h(XInputNumber, {
@@ -173,6 +187,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'verify',
     title: '是否允许验证',
+    isDrag: true,
     width: 108,
     render(value, row) {
       return h(XSwitch, {
@@ -199,6 +214,7 @@ export const columns: XColDef<Service> = [
   {
     key: 'disablePackage',
     title: '禁用',
+    isDrag: true,
     width: 108,
     render(value, row) {
       return h(XSwitch, {

@@ -12,16 +12,23 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'id',
     title: 'ID',
+    isDrag: true,
     width: 108,
   },
   {
     key: 'code',
     title: '券码',
+    isDrag: true,
     minWidth: 128,
   },
   {
     key: 'type',
     title: '类型',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      return VOUCHER_ENUM_MAP[row.type].label
+    },
     minWidth: 88,
     render: (value) => {
       // return VOUCHER_TYPE_MAP[value as VOUCHER_TYPE].label
@@ -35,6 +42,11 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'creditsUsageType',
     title: '类型',
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      return VOUCHER_TYPE_MAP[row.creditsUsageType ?? VOUCHER_TYPE.COMMON].label
+    },
     minWidth: 88,
     render: (value) => {
       // return VOUCHER_TYPE_MAP[value as VOUCHER_TYPE].label
@@ -48,6 +60,8 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'userId',
     title: '充值用户',
+    isDrag: true,
+    isFilter: true,
     width: 128,
     render: (value) => {
       if(value) {
@@ -63,11 +77,13 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'amount',
     title: '充值积分',
+    isDrag: true,
     width: 158,
   },
   {
     key: 'createTime',
     title: '生成时间',
+    isDrag: true,
     width: 208,
     render: (value) => {
       if(value) {
@@ -80,6 +96,7 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'expireTs',
     title: '过期时间',
+    isDrag: true,
     width: 208,
     render: (value, row) => {
       if(value) {
@@ -92,6 +109,7 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'useTime',
     title: '使用时间',
+    isDrag: true,
     width: 208,
     render: (value) => {
       if(value) {
@@ -103,6 +121,7 @@ export const columns: XColDef<Voucher> = [
   {
     key: 'status',
     title: '状态',
+    isDrag: true,
     width: 128,
     render: (_, row) => {
       async function handleChange(value: VOUCHER_STATUS) {

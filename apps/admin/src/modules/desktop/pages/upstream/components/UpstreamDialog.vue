@@ -36,8 +36,9 @@ function validForm() {
 
 async function handleCreate() {
   const data = await createUpstream(store.formBase)
-  store.upstreams.push(data)
+  // store.upstreams.push(data)
   store.visibleBase = false
+  store.refresh = !store.refresh
 }
 
 async function handleUpdate() {
@@ -45,8 +46,9 @@ async function handleUpdate() {
   const body = { ...store.formBase, apiId: upstream.apiId }
   await updateUpstream(body)
 
-  store.upstreams[store.index!] = { ...upstream, ...body }
+  // store.upstreams[store.index!] = { ...upstream, ...body }
   store.visibleBase = false
+  store.refresh = !store.refresh
 }
 </script>
 

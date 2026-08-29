@@ -11,12 +11,14 @@ export const columns: XColDef<IllustrateItem> = [
   {
     key: 'id',
     title: 'ID',
+    isDrag: true,
     width: 88,
   },
   {
     key: 'serviceCode',
     title: '说明文档模块',
-    width: 128,
+    isDrag: true,
+    minWidth: 128,
     render(value) {
       const router = useRouter()
 
@@ -33,7 +35,8 @@ export const columns: XColDef<IllustrateItem> = [
   {
     key: 'description',
     title: '说明文档描述',
-    width: 188,
+    isDrag: true,
+    minWidth: 188,
     cellEmpty: "暂无描述",
     render(value) {
       return value ? value : '暂无描述'
@@ -42,7 +45,8 @@ export const columns: XColDef<IllustrateItem> = [
   {
     key: 'serviceDesc',
     title: '富文本预览',
-    width: 88,
+    isDrag: true,
+    minWidth: 88,
     render(value, row) {
       const router = useRouter()
 
@@ -71,11 +75,13 @@ export const columns: XColDef<IllustrateItem> = [
   {
     key: 'updateTime',
     title: '最新更新时间',
-    width: 128
+    isDrag: true,
+    width: 168
   },
   {
     key: 'action',
     title: '操作',
+    isDrag: true,
     width: 58,
     fixed: 'right',
     render(_, row, index) {

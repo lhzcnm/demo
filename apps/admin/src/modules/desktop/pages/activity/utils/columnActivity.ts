@@ -9,17 +9,22 @@ export const columns: XColDef<Activity> = [
   {
     key: "id",
     title: "ID",
+    isDrag: true,
     width: 88,
   },
   {
     key: "name",
     title: "活动名",
+    isFilter: true,
+    isDrag: true,
     minWidth: 158,
   },
   {
     key: "status",
     title: "活动状态",
     width: 208,
+    isFilter: true,
+    isDrag: true,
     render: (value) => {
       const status = ACTIVITY_STATUS_MAP[value as ACTIVITY_STATUS]
 
@@ -31,16 +36,19 @@ export const columns: XColDef<Activity> = [
   {
     key: "startTime",
     title: "活动开始时间",
+    isDrag: true,
     width: 208,
   },
   {
     key: "endTime",
     title: "活动结束时间",
+    isDrag: true,
     width: 208,
   },
   {
     key: "createdAt",
     title: "活动创建时间",
+    isDrag: true,
     width: 208,
   },
   // {
@@ -51,6 +59,7 @@ export const columns: XColDef<Activity> = [
   {
     key: "description",
     title: "活动描述",
+    isDrag: true,
     width: 128,
     render: (_, __, index) => {
       const store = inject(ACTIVITY_STORE)!

@@ -22,10 +22,16 @@ async function updateApiItem(row: Upstream) {
 }
 
 export const columns: XColDef<Upstream> = [
-  { key: 'apiId', title: 'APIID', width: 68 },
+  {
+    key: 'apiId',
+    title: 'APIID',
+    isDrag: true,
+    width: 68
+  },
   {
     key: 'apiTitle',
     title: 'API名称',
+    isDrag: true,
     width: 225,
     edit: {
       trigger: 'dblclick',
@@ -46,6 +52,7 @@ export const columns: XColDef<Upstream> = [
   {
     key: 'serverUrl',
     title: 'API地址',
+    isDrag: true,
     minWidth: 350,
     edit: {
       trigger: 'dblclick',
@@ -78,6 +85,7 @@ export const columns: XColDef<Upstream> = [
   {
     key: 'accountId',
     title: '用户名',
+    isDrag: true,
     width: 108,
     cellEmpty: '--',
     edit: {
@@ -99,6 +107,7 @@ export const columns: XColDef<Upstream> = [
   {
     key: 'apiKey',
     title: 'API密钥',
+    isDrag: true,
     width: 300,
     cellEmpty: '--',
     edit: {
@@ -120,7 +129,12 @@ export const columns: XColDef<Upstream> = [
   {
     key: 'apiType',
     title: 'API类型',
-    width: 88,
+    isDrag: true,
+    isFilter: true,
+    filterRender(row) {
+      return API_TYPE_MAP[row.apiType].label
+    },
+    width: 128,
     render(value) {
       return h(XTag, API_TYPE_MAP[value])
     },
@@ -128,6 +142,7 @@ export const columns: XColDef<Upstream> = [
   {
     key: 'disableApi',
     title: '禁用',
+    isDrag: true,
     width: 128,
     render(value, row) {
       return h(XSwitch, {
