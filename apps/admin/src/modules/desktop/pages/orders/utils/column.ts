@@ -85,8 +85,8 @@ export const columns: XColDef<Order> = [
     }
   },
   {
-    key: 'speed',
-    title: '耗时',
+    key: 'costTime',
+    title: '上游耗时',
     width: 88,
     render(_, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
@@ -95,27 +95,43 @@ export const columns: XColDef<Order> = [
       }
 
       const updateTimeDate = new Date(row.updateTime).getTime()
-      const requestedAtDate = new Date(row.requestedAt).getTime()
+      const requestedAtDate = new Date(row.requestUpTime).getTime()
       const diffTime = updateTimeDate - requestedAtDate
       const diff = Math.round(diffTime / 1000)
       return diff < 1 ? '<1s' : `${diff}s`
     }
   },
   {
-    key: 'requestedAt',
-    title: '日期',
-    width: 164,
-    render(value, row) {
+    key: 'requestUpTime',
+    title: '请求上游时间',
+    width: 168,
+    render(_, row) {
       const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
       if (whiteList.includes(row.codeStatusId)) {
-        return h('div', `请求：${value.slice(5)}`)
+        return h('div', `请求：${row.requestUpTime.slice(5)}`)
       }
 
       return [
-        h('div', `请求：${value.slice(5)}`),
+        h('div', `请求：${row.requestUpTime.slice(5)}`),
         h('div', `更新：${row.updateTime.slice(5)}`),
       ]
     }
+  },
+  {
+    key: 'requestedAt',
+    title: '订单创建时间',
+    width: 164,
+    // render(value, row) {
+    //   const whiteList = [ORDER_STATUS.PROCESSING, ORDER_STATUS.WAIT]
+    //   if (whiteList.includes(row.codeStatusId)) {
+    //     return h('div', `请求：${value.slice(5)}`)
+    //   }
+
+    //   return [
+    //     h('div', `请求：${value.slice(5)}`),
+    //     h('div', `更新：${row.updateTime.slice(5)}`),
+    //   ]
+    // }
   },
   {
     key: 'comments',

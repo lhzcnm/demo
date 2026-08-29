@@ -34,7 +34,7 @@ function getSpeed() {
   }
 
   const updateTimeDate = new Date(order.updateTime).getTime()
-  const requestedAtDate = new Date(order.requestedAt).getTime()
+  const requestedAtDate = new Date(order.requestUpTime).getTime()
   const diffTime = updateTimeDate - requestedAtDate
   const diff = Math.round(diffTime / 1000)
   return diff < 1 ? '<1s' : `${diff}s`
@@ -178,13 +178,21 @@ function handleRejectOrder() {
         <span class="font-medium break-all">{{ order.imeiNo }}</span>
       </div>
       <div class="flex items-center">
-        <span class="text-muted-foreground shrink-0">请求日期：</span>
+        <span class="text-muted-foreground shrink-0">订单创建时间：</span>
         <span class="font-medium break-all">{{ order.requestedAt.slice(5) }}</span>
       </div>
       <div class="flex items-center">
-        <span class="text-muted-foreground shrink-0">更新日期：</span>
+        <span class="text-muted-foreground shrink-0">上游请求时间：</span>
+        <span class="font-medium break-all">{{ order.requestUpTime.slice(5) }}</span>
+      </div>
+      <div class="flex items-center">
+        <span class="text-muted-foreground shrink-0">上游更新时间：</span>
         <span class="font-medium break-all">{{ order.updateTime.slice(5) }}</span>
       </div>
+      <!-- <div class="flex items-center">
+        <span class="text-muted-foreground shrink-0">更新日期：</span>
+        <span class="font-medium break-all">{{ order.updateTime.slice(5) }}</span>
+      </div> -->
       <div class="flex items-center">
         <span class="text-muted-foreground shrink-0">所属用户：</span>
         <a

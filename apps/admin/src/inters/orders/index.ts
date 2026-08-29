@@ -21,6 +21,7 @@ export const zOrder = z.object({
   verifyIp: z.string().default('').nullable(),
   showToSupplier: z.boolean().default(false).nullable(),
   supplierId: z.string().default('').nullable(),
+  requestUpTime: z.string().default(''),
   updateTime: z.string().default(''),
   isBulk: z.boolean().nullable().default(false),
   submitMethod: z.enum(SUBMIT_METHOD).default(SUBMIT_METHOD.WECHAT),
