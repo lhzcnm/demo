@@ -35,7 +35,7 @@ function validForm() {
 }
 
 async function handleCreate() {
-  const data = await createUpstream(store.formBase)
+  await createUpstream(store.formBase)
   // store.upstreams.push(data)
   store.visibleBase = false
   store.refresh = !store.refresh
