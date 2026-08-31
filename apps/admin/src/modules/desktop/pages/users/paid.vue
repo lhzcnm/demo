@@ -10,6 +10,7 @@ import type { PaidStore } from './utils'
 import { columns } from './utils/columnPaid'
 import { PAID_STORE } from './utils'
 import type { XTableExpose } from '@3un/ui'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: PaidStore = reactive({
   users        : createList(),
@@ -24,6 +25,8 @@ provide(PAID_STORE, store)
 
 const loading = ref(false)
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.UserPaid)
 
 watch(
   [
@@ -95,11 +98,16 @@ function resetSearch() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.users.list"
         :loading="loading"
         row-key="userId"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.UserPaid,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

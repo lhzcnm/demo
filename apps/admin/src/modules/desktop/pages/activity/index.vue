@@ -7,6 +7,7 @@ import { zActivityForm, zActivitySearch, type ActivitySearch } from '@/inters/ac
 import { ACTIVITY_STORE, type ActivityStore } from './utils'
 import { getActivitys } from '@/api/activity'
 import { columns } from "./utils/columnActivity"
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: ActivityStore = reactive({
   visibleBase: false,
@@ -27,6 +28,8 @@ const store: ActivityStore = reactive({
 provide(ACTIVITY_STORE, store)
 
 const loading = ref<boolean>(false)
+
+const initedColumns = initColumns(columns, ColumnEnum.Activity)
 
 watch(
   [
@@ -91,10 +94,15 @@ function openCreate() {
 
     <div class="p-3 pb-0">
       <XTable
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.activities"
         :loading="loading"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Activity,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

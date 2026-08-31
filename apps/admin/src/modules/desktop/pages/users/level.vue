@@ -7,6 +7,7 @@ import { zLevelForm, zLevelServiceForm } from '@/inters/level'
 import type { LevelStore } from './utils'
 import { columns } from './utils/columnLevel'
 import { LEVEL_STORE } from './utils'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const levelStore = useLevelStore()
 await levelStore.getList(true)
@@ -24,6 +25,8 @@ const store: LevelStore = reactive({
 })
 
 provide(LEVEL_STORE, store)
+
+const initedColumns = initColumns(columns, ColumnEnum.UserLevel)
 
 function openCreate() {
   store.formBase = zLevelForm.parse({})
@@ -43,10 +46,15 @@ function openCreate() {
 
     <div class="p-3 pb-0">
       <XTable
-        :columns="columns"
+        :columns="initedColumns"
         :data="levelStore.levels"
         row-key="pricePlanId"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.UserLevel,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

@@ -17,6 +17,7 @@ import { createList, defaultPageSize, pageSizes } from '@/utils'
 import type { RechargeStore } from './utils'
 import { columns } from './utils/column'
 import { RECHARGE_STORE } from './utils'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: RechargeStore = reactive({
   recharges: createList(),
@@ -49,6 +50,8 @@ const tableRef = ref<XTableExpose | null>(null)
 const queryHash = computed(() => hash(route.query))
 const packageStore = usePackageStore()
 await packageStore.getList()
+
+const initedColumns = initColumns(columns, ColumnEnum.Recharge)
 
 store.handleFee = {
   aliFee: (+configs['recharge:fee'] * 100).toString(),
@@ -162,9 +165,20 @@ async function handleDelete() {
     </section>
 
     <div class="p-3 pb-0">
-      <XTable ref="tableRef" :columns="columns" :data="store.recharges.list" :loading="loading" selection
-        row-key="paymentId" selected-key="paymentId" class="border h-[calc(100vh-8.75rem)]"
-        @select-change="ids = $event" />
+      <XTable
+        ref="tableRef"
+        :columns="initedColumns"
+        :data="store.recharges.list"
+        :loading="loading" selection
+        row-key="paymentId"
+        selected-key="paymentId" class="border h-[calc(100vh-8.75rem)]"
+        @select-change="ids = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Recharge,
+          column.key.toString(),
+          width
+        )"
+      />
     </div>
 
     <RechargeSearch :key="queryHash" />

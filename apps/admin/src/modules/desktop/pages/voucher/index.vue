@@ -6,6 +6,7 @@ import { deleteVoucher, getVouchers } from '@/api/voucher'
 import { columns } from './utils/column'
 import VoucherCreate from './components/VoucherCreate.vue'
 import { toast } from 'vue-sonner'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: VoucherStore = reactive({
   visibleCreate: false,
@@ -24,6 +25,8 @@ provide(VOUCHER_STORE, store)
 
 const loading = ref<boolean>(false)
 const ids = ref<number[]>([])
+
+const initedColumns = initColumns(columns,ColumnEnum.Voucher)
 
 watch(
   (
@@ -105,7 +108,7 @@ async function batchDelete() {
     <section class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.vouchers.list"
         :loading
         row-key="id"
@@ -113,6 +116,12 @@ async function batchDelete() {
         selected-key="id"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="ids = $event"
+
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Voucher,
+          column.key.toString(),
+          width
+        )"
       />
     </section>
 

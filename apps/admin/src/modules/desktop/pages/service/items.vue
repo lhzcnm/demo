@@ -10,6 +10,7 @@ import { getUpstreams } from '@/api/upstream'
 import { SERVICE_STORE, type ServiceStore } from './utils'
 import { columns } from './utils/columnItem'
 import ServiceFieldDialog from './components/ServiceFieldDialog.vue'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const serviceStore = useServiceStore()
 const store: ServiceStore = reactive({
@@ -34,6 +35,8 @@ provide(SERVICE_STORE, store)
 
 const route = useRoute()
 const router = useRouter()
+
+const initedColumns = initColumns(columns, ColumnEnum.ServiceItem)
 
 watch(
   () => route.query,
@@ -122,8 +125,13 @@ function handleClear(type: ClearType) {
     <div class="p-3 pb-0">
       <XTable
         :data="displayItems"
-        :columns="columns"
+        :columns="initedColumns"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.ServiceItem,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

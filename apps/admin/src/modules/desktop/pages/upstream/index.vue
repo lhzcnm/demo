@@ -10,6 +10,7 @@ import type { UpstreamStore } from './utils'
 import { columns } from './utils/column'
 import { UPSTREAM_STORE } from './utils'
 import { toast } from 'vue-sonner'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: UpstreamStore = reactive({
   upstreams: await getUpstreams(),
@@ -26,6 +27,8 @@ provide(UPSTREAM_STORE, store)
 const search = ref('')
 const apiType = ref<API_TYPE | undefined>()
 const ids = ref<number[]>([])
+
+const initedColumns = initColumns(columns, ColumnEnum.UpstreamApi)
 
 watch(
   () => store.refresh,
@@ -114,13 +117,18 @@ async function handleDelete() {
 
     <div class="p-3 pb-0">
       <XTable
-        :columns="columns"
+        :columns="initedColumns"
         :data="displayUpstreams"
         selection
         row-key="apiId"
         selected-key="apiId"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="ids = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.UpstreamApi,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

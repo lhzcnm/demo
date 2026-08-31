@@ -6,6 +6,7 @@ import { getIntercepts } from '@/api/intercept'
 import type { InterceptStore } from './utils'
 import { columns } from './utils/column'
 import { INTERCEPT_STORE } from './utils'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: InterceptStore = reactive({
   intercepts: await getIntercepts(),
@@ -17,6 +18,8 @@ const store: InterceptStore = reactive({
 })
 
 provide(INTERCEPT_STORE, store)
+
+const initedColumns = initColumns(columns, ColumnEnum.Intercept)
 
 function openCreate() {
   store.formBase = zInterceptForm.parse({})
@@ -36,10 +39,15 @@ function openCreate() {
 
     <div class="p-3 pb-0">
       <XTable
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.intercepts"
         row-key="id"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Intercept,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

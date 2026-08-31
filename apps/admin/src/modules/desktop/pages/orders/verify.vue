@@ -11,6 +11,7 @@ import type { VerifyStore } from './utils'
 import { columns } from './utils/columnVerify'
 import { VERIFY_STORE } from './utils'
 import type { XTableExpose } from '@3un/ui'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column'
 
 const store: VerifyStore = reactive({
   orders: createList(),
@@ -25,6 +26,8 @@ provide(VERIFY_STORE, store)
 const loading = ref(false)
 const selected = shallowRef<Order[]>([])
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.OrderVerify)
 
 watch(
   [
@@ -112,12 +115,17 @@ function handleReply(verify: number) {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :loading="loading"
         :data="store.orders.list"
         selection row-key="codeId"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="selected = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.OrderVerify,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
   </div>

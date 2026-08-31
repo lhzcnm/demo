@@ -7,6 +7,7 @@ import { getUnlockList } from '@/api/services'
 
 import { UNLOCK_STORE, type UnlockStore } from './utils'
 import { columns } from './utils/columnUnlock'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: UnlockStore = reactive({
   unlocks: [],
@@ -22,6 +23,8 @@ const store: UnlockStore = reactive({
 })
 
 provide(UNLOCK_STORE, store)
+
+const initedColumns = initColumns(columns, ColumnEnum.ServiceUnlock)
 
 watch(
   () => store.refresh,
@@ -54,9 +57,14 @@ function openCreate() {
     <div class="p-3 pb-0">
       <XTable
         :data="store.unlocks"
-        :columns="columns"
+        :columns="initedColumns"
         row-key="id"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.ServiceUnlock,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

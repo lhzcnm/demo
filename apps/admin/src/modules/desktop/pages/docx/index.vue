@@ -8,6 +8,7 @@ import { xconfirm } from '@3un/utils'
 import { zIllustrateForm } from '@/inters/illustrate/index.ts'
 import IllustrateDialog from './component/IllustrateDialog.vue'
 import IllustrateConfirm from './component/IllustrateConfirm.vue'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store = reactive<DocxStore>({
   docxImageMap: new Map(),
@@ -27,6 +28,8 @@ const iStore = useSystemStore()
 
 const selectCodes = ref<string[]>([])
 const loading = ref<boolean>(false)
+
+const initedColumns = initColumns(columns, ColumnEnum.Docx)
 
 watch(
   () => store.refresh,
@@ -80,13 +83,18 @@ function openCreate() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="iStore.illustrateList"
         selection
         :loading
         selected-key="serviceCode"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="selectCodes = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Docx,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

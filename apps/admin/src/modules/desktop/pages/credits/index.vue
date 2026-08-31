@@ -11,6 +11,7 @@ import { CREDIT_STORE, columns } from './utils'
 import { createList, defaultPageSize, pageSizes } from '@/utils'
 import { hash } from 'ohash'
 import type { XTableExpose } from '@3un/ui'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: CreditStore = reactive({
   credits: createList(),
@@ -35,6 +36,8 @@ const loading = ref(false)
 const queryHash = computed(() => hash(route.query))
 
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.Credit)
 
 watch(
   [
@@ -144,11 +147,16 @@ function resetSearch() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :loading="loading"
         :data="store.credits.list"
         row-key="id"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Credit,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

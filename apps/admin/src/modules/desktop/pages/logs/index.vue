@@ -14,6 +14,7 @@ import type { LogStore } from './utils'
 import { columns } from './utils/column'
 import { LOG_STORE } from './utils'
 import type { XTableExpose } from '@3un/ui'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: LogStore = reactive({
   logs: createList(),
@@ -37,6 +38,8 @@ const ids = ref<number[]>([])
 const queryHash = computed(() => hash(route.query))
 
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.Logs)
 
 watch(
   [
@@ -145,7 +148,7 @@ async function handleDelete() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.logs.list"
         :loading="loading"
 
@@ -153,6 +156,12 @@ async function handleDelete() {
         selection selected-key="id"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="ids = $event"
+
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Logs,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

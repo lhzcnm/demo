@@ -9,6 +9,7 @@ import { MONITOR_SERVER_STORE, type MonitorServerStore } from './utils'
 import { getMonitorServers } from '@/api/monitor'
 import { createList, defaultPageSize, pageSizes } from '@/utils'
 import { columns } from "./utils/columnServer"
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: MonitorServerStore = reactive({
   visibleSearch: false,
@@ -28,6 +29,8 @@ provide(MONITOR_SERVER_STORE, store)
 
 const loading = ref<boolean>(false)
 const tableRef = ref<XTableExpose | null> (null)
+
+const initedColumns = initColumns(columns, ColumnEnum.Monitor)
 
 watch(
   [
@@ -90,10 +93,15 @@ function initSearchData() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.servers.list"
         :loading="loading"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Monitor,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

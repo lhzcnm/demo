@@ -19,6 +19,7 @@ import { form, formatOrderParams, HISTORY_STORE } from '../utils'
 import { getOrderColumns } from '../utils/columns'
 import { orderApi, type Order, type OrderExportParams, type OrderPrintParams } from '@/api/orders'
 import type { ImgOrderItem } from '../types'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store = inject(HISTORY_STORE)!
 
@@ -36,7 +37,7 @@ const imgOrders = reactive<ImgOrderItem[]>([])
 
 const tableRef = ref<XTableExpose | null>(null)
 
-const columns = getOrderColumns()
+const initedColumns = initColumns(getOrderColumns(), ColumnEnum.Order)
 
 watch(
   [page, limit],
@@ -277,12 +278,17 @@ onUnmounted(() => {
     <XTable
       ref="tableRef"
       :data="store.orders.list"
-      :columns="columns"
+      :columns="initedColumns"
       :loading="loading"
       row-key="id"
       selected-key="id" selection
       class="h-[calc(100%-3rem)] border"
       @select-change="selectRows = $event"
+      @column-resize="(column, width) => storageColumn(
+        ColumnEnum.Order,
+        column.key.toString(),
+        width
+      )"
     />
 
     <SearchOrder />

@@ -9,6 +9,7 @@ import { createList, defaultPageSize, pageSizes } from '@/utils'
 import { columns } from './utils/column'
 import { OSS_STORE, type OssStore } from './utils'
 import { toast } from 'vue-sonner'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store = reactive<OssStore>({
   visibleUpdate: false,
@@ -25,6 +26,8 @@ const loading = ref<boolean>(false)
 const selectIds = ref<number[]>([])
 
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.Oss)
 
 const notDelete = [43, 44, 45, 46, 47, 48]
 
@@ -104,12 +107,17 @@ async function handleBatchDelete() {
       <XTable
         class="border h-[calc(100vh-8.75rem)]"
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.ossData.list"
         :loading="loading"
         selection
         selected-key="ossId"
         @select-change="selectIds = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Oss,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

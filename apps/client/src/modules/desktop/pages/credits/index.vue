@@ -2,6 +2,7 @@
 import type { CreditLogsResponse } from '@/api/user'
 import { userApi } from '@/api/user'
 import { getCreditColumns } from './utils/columns'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column'
 
 const page = ref(1)
 const limit = ref(20)
@@ -13,7 +14,8 @@ const loading = ref(false)
 const serviceStore = useServiceStore()
 await serviceStore.getServices()
 
-const columns = getCreditColumns()
+// const columns = getCreditColumns()
+const initedColumns = initColumns(getCreditColumns(), ColumnEnum.Credit)
 
 watch(
   [page, limit],
@@ -52,10 +54,15 @@ watch(
 
     <XTable
       :data="creditLogs.list"
-      :columns="columns"
+      :columns="initedColumns"
       :loading="loading"
       row-key="historyId"
       class="h-[calc(100%-3rem)] border"
+      @column-resize="(column, width) => storageColumn(
+        ColumnEnum.Credit,
+        column.key.toString(),
+        width
+      )"
     />
   </div>
 </template>

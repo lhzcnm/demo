@@ -7,9 +7,12 @@ import UpdateDialog from './components/UpdateDialog.vue'
 import { pageSizes } from '@/utils/common'
 import { localListTable } from './utils/localTable'
 import { createLocalForm, useLocalStore } from './utils/store'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store = useLocalStore()
 // const size = ref<number[]>([50, 100, 200, 300, 500])
+
+const initedColumns = initColumns(localListTable, ColumnEnum.Locale)
 
 watch(
   () => [store.searchForm.page, store.searchForm.pageSize],
@@ -97,7 +100,17 @@ onMounted(() => {
     </section>
 
     <section class="p-3 pb-0">
-      <XTable ref="tableRef" :columns="localListTable" :data="store.localList" class="border h-[calc(100vh-8.75rem)]" />
+      <XTable
+        ref="tableRef"
+        :columns="initedColumns"
+        :data="store.localList"
+        class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Locale,
+          column.key.toString(),
+          width
+        )"
+      />
     </section>
     
     <SearchDialog />

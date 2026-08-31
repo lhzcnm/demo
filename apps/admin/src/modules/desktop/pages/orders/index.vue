@@ -17,6 +17,7 @@ import type { OrderStore } from './utils'
 import { columns } from './utils/column'
 import { ORDER_STORE } from './utils'
 import type { XTableExpose } from '@3un/ui'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: OrderStore = reactive({
   orders: createList(),
@@ -43,6 +44,8 @@ const { copy } = useClipboard()
 const loading = ref(false)
 const selected = shallowRef<Order[]>([])
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.Order)
 
 const queryHash = computed(() => hash(route.query)) 
 
@@ -309,13 +312,18 @@ const handleBatchEdit = selectDecorator(() => {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :loading="loading"
         :data="store.orders.list"
 
         selection row-key="codeId"
         class="border h-[calc(100vh-11.125rem)]"
         @select-change="selected = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.Order,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

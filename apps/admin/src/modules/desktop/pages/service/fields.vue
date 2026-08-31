@@ -12,6 +12,7 @@ import { FIELD_STORE, type ServiceFieldStore } from './utils'
 import { columns } from './utils/columnField'
 import type { XTableExpose } from '@3un/ui'
 import FieldCreate from './components/FieldCreate.vue'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const serviceStore = useServiceStore()
 await serviceStore.getItems()
@@ -37,6 +38,8 @@ provide(FIELD_STORE, store)
 const ids = ref<number[]>([])
 const loading = ref(false)
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.ServiceField)
 
 watch(
   [
@@ -125,12 +128,17 @@ function handleDelete() {
       <XTable
         ref="tableRef"
         :data="store.fields.list"
-        :columns="columns"
+        :columns="initedColumns"
         :loading="loading"
         row-key="id"
         selection selected-key="id"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="ids = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.ServiceField,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

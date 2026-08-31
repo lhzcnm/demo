@@ -24,6 +24,7 @@ import { columns } from './utils/columnUser'
 import { USER_STORE } from './utils'
 import type { XTableExpose } from '@3un/ui'
 import UserVoucherPoint from './components/UserVoucherPoint.vue'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: UsersStore = reactive({
   extraInfo: zUserExtraInfo.parse({}),
@@ -58,6 +59,8 @@ const loading = ref(false)
 const queryHash = computed(() => hash(route.query))
 
 const tableRef = ref<XTableExpose | null>(null)
+
+const initedColumns = initColumns(columns, ColumnEnum.User)
 
 watch(
   [
@@ -164,11 +167,16 @@ function resetSearch() {
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.users.list"
         :loading="loading"
         row-key="userId"
         class="border h-[calc(100vh-8.75rem)]"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.User,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

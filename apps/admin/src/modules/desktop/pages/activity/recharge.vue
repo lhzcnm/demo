@@ -14,6 +14,7 @@ import { zActivyVoucherForm } from '@/inters/voucher/activity'
 import { deleteRecharges } from '@/api/recharge'
 import { toast } from 'vue-sonner'
 import { ACTIVITY_STATUS, xconfirm } from '@3un/utils'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: ActivityRecharge = reactive({
   visibleCreate: false,
@@ -39,6 +40,8 @@ provide(ACTIVITY_RECHARGE_STORE, store)
 const loading = ref<boolean>(false)
 const tableRef = ref<XTableExpose | null>(null)
 const ids = ref<number[]>([])
+
+const initedColumns = initColumns(columns, ColumnEnum.ActivityRecharge)
 
 watch(
   [
@@ -178,13 +181,18 @@ await getActivityList()
     <div class="p-3 pb-0">
       <XTable
         ref="tableRef"
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.recharges.list"
         :loading="loading"
         selection
         selected-key="paymentId"
         class="border h-[calc(100vh-8.75rem)]"
         @select-change="ids = $event"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.ActivityRecharge,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 

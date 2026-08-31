@@ -8,6 +8,7 @@ import { getCustomMsgList, getBuiltInMsgList } from '@/api/wechat'
 import type { MsgStore } from './utils'
 import { MSG_STORE } from './utils'
 import { columns } from './utils/columnMsg'
+import { ColumnEnum, initColumns, storageColumn } from '@/utils/column.ts'
 
 const store: MsgStore = reactive({
   builtInList: [],
@@ -23,6 +24,8 @@ const store: MsgStore = reactive({
 })
 
 provide(MSG_STORE, store)
+
+const initedColumns = initColumns(columns, ColumnEnum.WechatMessage)
 
 await getList()
 async function getList() {
@@ -59,10 +62,15 @@ function openBuiltIn() {
 
     <div>
       <XTable
-        :columns="columns"
+        :columns="initedColumns"
         :data="store.msgList"
         class="h-[calc(100vh-8.75rem)]"
         row-key="id"
+        @column-resize="(column, width) => storageColumn(
+          ColumnEnum.WechatMessage,
+          column.key.toString(),
+          width
+        )"
       />
     </div>
 
