@@ -6,70 +6,127 @@ const field = defineModel<ServiceFieldSyncItem>({ required: true })
 </script>
 
 <template>
-  <div class="bg-card  gap-y-2 flex flex-col">
-    <div class="px-4 py-2 flex flex-col gap-2 relative border rounded">
-      <div class="flex-1 flex gap-2">
-        <XFormField ui-root="flex-1 last:p-0 first:p-0 p-0" variant="vertical" label="字段名(中文)">
-          <XInput v-model="field.name" placeholder="字段名(中文)" />
-        </XFormField>
-        <XFormField ui-root="flex-1 last:p-0 first:p-0 p-0" variant="vertical" label="字段名(英文)">
-          <XInput v-model="field.nameEn" placeholder="字段名(中文)" />
-        </XFormField>
+  <div class="rounded-lg border bg-card shadow-sm">
+    <div class="divide-y relative">
+      <!-- 基础信息 -->
+      <div class="p-4">
+        <div class="mb-4 text-sm font-medium">
+          基础信息
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <XFormField
+            ui-root="py-0"
+            variant="vertical"
+            label="中文"
+          >
+            <XInput
+              v-model="field.name"
+              placeholder="中文"
+            />
+          </XFormField>
+
+          <XFormField
+            ui-root="py-0"
+            variant="vertical"
+            label="英文"
+          >
+            <XInput
+              v-model="field.nameEn"
+              placeholder="英文"
+            />
+          </XFormField>
+        </div>
       </div>
-  
-      <div class="flex-1 flex gap-2">
-        <XFormField ui-root="flex-1 last:p-0 first:p-0 p-0" variant="vertical" label="字段宽度">
-          <XInput
-            v-model="field.width"
-            placeholder="字段宽度"
-            @input="(e: Event) => field.width = handleInputNumberChange(e, 0)!"
-            @change="(e: Event) => field.width = handleInputNumberChange(e, 0)!"
-          />
-        </XFormField>
-        <XFormField ui-root="flex-1 last:p-0 first:p-0 p-0" variant="vertical" label="字段排序(越大越前)">
-          <XInputNumber
-            v-model="field.sortNum"
-            placeholder="字段排序"
-            :step="1"
-            :precision="0"
-          />
-        </XFormField>
-        <XFormField ui-root="flex-1 last:p-0 first:p-0 p-0" variant="vertical" label="启用状态">
-          <!-- <XInputNumber
-            v-model="field.sortNum"
-            placeholder="字段排序"
-            :step="1"
-            :precision="0"
-          /> -->
-          <XSwitch
-            v-model="field.status"
-            :active-value="1"
-            :inactive-value="0"
-          />
-        </XFormField>
+
+      <!-- 显示配置 -->
+      <div class="p-4">
+        <div class="mb-4 text-sm font-medium">
+          显示配置
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <XFormField
+            ui-root="py-0"
+            variant="vertical"
+            label="字段宽度"
+          >
+            <XInput
+              v-model="field.width"
+              placeholder="字段宽度"
+              @input="(e: Event) => field.width = handleInputNumberChange(e, 0)!"
+              @change="(e: Event) => field.width = handleInputNumberChange(e, 0)!"
+            />
+          </XFormField>
+
+          <XFormField
+            ui-root="py-0"
+            variant="vertical"
+            label="字段排序"
+          >
+            <XInputNumber
+              v-model="field.sortNum"
+              :step="1"
+              :precision="0"
+            />
+          </XFormField>
+
+          <XFormField
+            ui-root="py-0"
+            variant="vertical"
+            label="启用状态"
+          >
+            <div class="flex h-9 items-center gap-2">
+              <XSwitch
+                v-model="field.status"
+                :active-value="1"
+                :inactive-value="0"
+              />
+
+              <span class="text-sm text-muted-foreground">
+                {{ field.status ? '已启用' : '已停用' }}
+              </span>
+            </div>
+          </XFormField>
+        </div>
       </div>
 
       <div
         v-if="field.isDelete"
-        class="absolute inset-0 bg-black/20 z-10"
-      ></div>
+        class="absolute inset-0 z-10 rounded-lg bg-background/80 backdrop-blur-[1px]"
+      />
+
       <div
         v-if="field.isDelete"
-        class="absolute inset-0 flex items-center justify-center pointer-events-none"
+        class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
       >
-        <span
-          class="text-4xl font-bold text-danger/80 rotate-[-20deg] select-none"
-        >
+        <span class="rotate-[-8deg] select-none text-3xl font-bold text-danger/80">
           已被删除
         </span>
       </div>
     </div>
 
-    <div class="flex justify-end gap-2">
-      <XButton v-show="!field.isDelete" label="删除字段" color="danger" size="sm" @click="field.isDelete = true" />
-      <XButton v-show="field.isDelete" label="取消删除字段" color="warning" size="sm" @click="field.isDelete = false" />
-    </div>
+    <!-- 操作 -->
+    <div class="flex items-center justify-between bg-muted/20 px-4 py-3">
+      <span class="text-xs text-muted-foreground">
+        字段操作
+      </span>
 
-    <hr class="w-full h-px border-border">
+      <XButton
+        v-show="!field.isDelete"
+        label="删除字段"
+        color="danger"
+        size="sm"
+        @click="field.isDelete = true"
+      />
+
+      <XButton
+        v-show="field.isDelete"
+        label="取消删除字段"
+        color="warning"
+        size="sm"
+        @click="field.isDelete = false"
+      />
+    </div>
   </div>
 </template>
