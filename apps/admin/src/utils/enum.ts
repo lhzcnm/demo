@@ -32,6 +32,7 @@ export const QUOTATION_ENUM_LIST = [
 export enum PLAN_TYPE_ENUM {
   GRANDTOTAL = 0,
   SUBSCRIPTION = 1,
+  FIXED = 2,
 }
 
 export const PLAN_TYPE_LIST = [
@@ -42,5 +43,9 @@ export const PLAN_TYPE_LIST = [
   {
     value: PLAN_TYPE_ENUM.SUBSCRIPTION,
     label: '一次性付费会员',
+  },
+  {
+    value: PLAN_TYPE_ENUM.FIXED,
+    label: '固定会员等级',
   },
 ]

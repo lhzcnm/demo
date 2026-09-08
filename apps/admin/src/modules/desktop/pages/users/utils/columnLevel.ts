@@ -43,6 +43,9 @@ export const columns: XColDef<Level> = [
         case PLAN_TYPE_ENUM.SUBSCRIPTION:
           return `包月会员`
 
+        case PLAN_TYPE_ENUM.FIXED:
+          return `固定会员等级`
+
         default:
           return '-'
       }
