@@ -47,6 +47,7 @@ const menus: SidebarMenu[] = [
   { label: localStore.localData['sidebar_Home'], path: '/', icon: 'iconoir:home-alt-slim-horiz', type: 'basic' as const },
   // { label: t('barItem.quote'), path: '/quote', icon: 'circum:receipt' },
   { label: localStore.localData['sidebar_OrderSubmit'], path: '/submit', icon: 'iconoir:atom', type: 'basic' as const },
+  // { label: localStore.localData['sidebar_OrderSubmit'] + '(旧)', path: '/oldSubmit', icon: 'icon-park-outline:upload-logs', type: 'basic' as const },
   { label: localStore.localData['sidebar_PrintQuery'], path: '/custom-submit', icon: 'iconoir:atom', type: 'basic' as const },
   {
     label: localStore.localData['sidebar_Devices'],

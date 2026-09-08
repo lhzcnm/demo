@@ -11,6 +11,7 @@ const routes = [
   { name: localStore.localData['top_Home'], path: '/m', icon: 'iconoir:home-alt-slim-horiz' },
   { name: localStore.localData['top_Orders'], path: '/m/history', icon: 'iconoir:page-flip' },
   { name: localStore.localData['top_SubmitOrder'], path: '/m/submit', icon: 'iconoir:atom' },
+  { name: '批量查询', path: '/m/oldSubmit', icon: 'icon-park-outline:upload-logs' },
   {
     name: localStore.localData['top_Feedback'],
     path: '/m/ticket',
@@ -50,8 +51,8 @@ const currentPath = computed(() => {
           )"
           @dblclick="$router.go(0)"
         >
-          <Icon :icon="item.icon" class="size-6" />
-          <span class="mt-1 text-xs">{{ item.name }}</span>
+          <Icon :icon="item.icon" class="size-5" />
+          <span class="mt-1 text-[10px]">{{ item.name }}</span>
         </RouterLink>
       </template>
     </nav>

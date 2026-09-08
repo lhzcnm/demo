@@ -62,9 +62,29 @@ function handle(menu: SidebarMenu) {
         <span>{{ menu.label }}</span>
       </a>
 
-      <div  v-if="menu.hide" class="space-y-2 w-full mt-2">
+      <div v-if="menu.hide" class="space-y-2 w-full mt-2 select-none">
+        <div class="bg-zinc-100/20 dark:bg-zinc-800/50  rounded-md p-2 pt-0 border " @click="router.push('/oldSubmit')">
+          <div class="flex flex-col items-start justify-between">
+            <div>
+              <div class="flex flex-col items-center">
+                <span class="text-xl">📤</span>
+                <h3 class="text-lg font-bold text-blue-500">批量订单查询</h3>
+              </div>
+
+              <p class="text-xs text-muted-foreground mt-1">
+                批量提交订单任务，提高工作效率, 支持 Excel CSV等格式文件上传
+              </p>
+
+              <div class="text-blue-500 text-sm text-end font-medium">
+                立即使用 →
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <AppCard :is-sidebar="true" v-if="mode === 'SanHe'" />
-        <AppCardNew :is-sidebar="true"/>
+        <AppCardNew :is-sidebar="true" />
       </div>
 
     </template>

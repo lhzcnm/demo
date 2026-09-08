@@ -62,7 +62,7 @@ const buttonConfigs: ButtonConfig = {
   filter: { color: 'primary', variant: 'solid' },
   import: { color: 'primary', variant: 'solid' },
   export: { color: 'success', variant: 'solid' },
-  submit: { color: 'primary', variant: 'solid' },
+  submit: { color: 'primary', variant: 'soft' },
   confirm: { color: 'primary', variant: 'solid' },
   clear: { color: 'danger', variant: 'solid' },
   copy: { color: 'primary', variant: 'ghost', },

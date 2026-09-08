@@ -8,6 +8,7 @@ import notFound from './routes/404'
 
 import { wxApi } from '@/api/wx'
 import { ua } from '@3un/utils'
+import oldSubmit from './routes/OldSubmit'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -25,7 +26,7 @@ const adminKey = import.meta.env.VITE_ADMIN_TOKEN
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    ...auth, notFound,
+    ...auth, notFound, ...oldSubmit,
     ua.isMobile
       ? mobile
       : desktop

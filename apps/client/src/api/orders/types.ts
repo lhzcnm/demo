@@ -143,6 +143,7 @@ export interface OrderSubmitExportParams {
   serviceId: number
   excelHead: string[]
   deleteExcelHead: string[]
+  fileName?: string
 }
 export interface SubmitOrderListParams {
   serviceId: number

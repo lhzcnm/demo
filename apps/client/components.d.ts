@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AccountForm: typeof import('./src/components/form/AccountForm.vue')['default']
+    AppCard: typeof import('./src/modules/desktop/components/AppCard.vue')['default']
+    AppCardNew: typeof import('./src/modules/desktop/components/AppCardNew.vue')['default']
     BackHeader: typeof import('./src/modules/mobile/components/BackHeader.vue')['default']
     BarcodePreview: typeof import('./src/components/BarcodePreview.vue')['default']
     BaseFooter: typeof import('./src/components/BaseFooter.vue')['default']
@@ -49,6 +51,8 @@ declare module 'vue' {
     TheSidebar: typeof import('./src/modules/desktop/components/TheSidebar.vue')['default']
     TheTheme: typeof import('./src/components/TheTheme.vue')['default']
     TicketCard: typeof import('./src/components/card/TicketCard.vue')['default']
+    UnlockRecommendAction: typeof import('./src/components/UnlockRecommendAction.vue')['default']
+    UnlockRecommendDialog: typeof import('./src/components/UnlockRecommendDialog.vue')['default']
     WechatForm: typeof import('./src/components/form/WechatForm.vue')['default']
     XBulletinBoard: typeof import('@3un/ui')['XBulletinBoard']
     XButton: typeof import('@3un/ui')['XButton']
