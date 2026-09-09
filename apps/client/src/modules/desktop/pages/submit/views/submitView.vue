@@ -5,6 +5,7 @@ import ImportPlane from '../components/ImportPlane.vue'
 import TableColumnDialog from '../components/TableColumnDialog.vue'
 
 import { toast } from 'vue-sonner'
+import { useClipboard } from '@vueuse/core'
 import {
   isNumeric,
   XTableV2,
@@ -40,6 +41,7 @@ const uStore = useUserStore()
 const { connect, close } = useWsStore()
 const iStore = useSystemStore()
 const localStore = useLocalStore()
+const { copy } = useClipboard({ legacy: true })
 const route = useRoute()
 
 const orderTableRef = ref<XTableV2Expose | null>(null)
@@ -974,6 +976,22 @@ function handleSelectedIndex(keys: RowKey[]) {
   }
 }
 
+function handleCopyImei() {
+  if (indexes.value.length === 0) {
+    toast.warning(localStore.localData['history_SelectOrder_Toast'])
+    return
+  }
+
+  const res: string[] = []
+  for (const index of indexes.value) {
+    const order = store.rawOrders.find((o) => o.index === index)
+    if (order?.imei) res.push(order.imei)
+  }
+
+  copy(res.join('\n'))
+  toast.success(localStore.localData['history_Copied_Toast'])
+}
+
 async function cleanup() {
   if (lastServiceId) {
     const rejectedOrders = getSubmitedRejectOrder()
@@ -1070,6 +1088,13 @@ onBeforeUnmount(() => {
           :disabled="disabled"
           :loading="loading"
           @click="handleFresh"
+        />
+
+        <XButton
+          :label="localStore.localData['history_CopyIMEI']"
+          color="success"
+          variant="soft"
+          @click="handleCopyImei"
         />
 
         <XButton

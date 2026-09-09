@@ -26,6 +26,7 @@ const open = ref(false)
 const imei = ref('')
 const remark = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
+const imageInput = ref<HTMLInputElement | null>(null)
 const formatLoading = ref(false)
 
 /**
@@ -170,7 +171,75 @@ function getImageData(localId: string): Promise<string> {
 }
 
 /**
- * 拍照导入
+ * 处理图片 OCR 识别
+ * 从微信 localId 获取图片数据，调用 OCR 接口识别 IMEI，追加到输入框
+ */
+function processOcr(localId: string) {
+  formatLoading.value = true
+  getImageData(localId).then((data) => {
+    const file = base64ToFile(data)
+    const formData = new FormData()
+    formData.append('file', file)
+    return wxApi.ocr(formData)
+  }).then(({ data }) => {
+    const validList = getSubmitImei(data, IMEI_TYPE.IMEI_OR_SN, undefined).filter(Boolean)
+    if (validList.length === 0) {
+      toast.warning(localStore.localData['submit_NullImei'])
+      return
+    }
+    const imeiList = validList.join('\n')
+    const trimed = imei.value.trim()
+    imei.value = trimed ? `${trimed}\n${imeiList}` : imeiList
+  }).catch((err: any) => {
+    if (err.code === 'ECONNABORTED') {
+      toast.error(localStore.localData['submit_RequestTimeout'])
+    } else {
+      toast.error(localStore.localData['submit_RequestError'])
+    }
+  }).finally(() => {
+    formatLoading.value = false
+  })
+}
+
+/**
+ * 处理图片文件 OCR（非微信环境）
+ */
+function processImageFile(file: File) {
+  formatLoading.value = true
+  const formData = new FormData()
+  formData.append('file', file)
+  wxApi.ocr(formData).then(({ data }) => {
+    const validList = getSubmitImei(data, IMEI_TYPE.IMEI_OR_SN, undefined).filter(Boolean)
+    if (validList.length === 0) {
+      toast.warning(localStore.localData['submit_NullImei'])
+      return
+    }
+    const imeiList = validList.join('\n')
+    const trimed = imei.value.trim()
+    imei.value = trimed ? `${trimed}\n${imeiList}` : imeiList
+  }).catch((err: any) => {
+    if (err.code === 'ECONNABORTED') {
+      toast.error(localStore.localData['submit_RequestTimeout'])
+    } else {
+      toast.error(localStore.localData['submit_RequestError'])
+    }
+  }).finally(() => {
+    formatLoading.value = false
+  })
+}
+
+/**
+ * 图片文件选择回调（非微信环境）
+ */
+function onImagePicked(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (file) processImageFile(file)
+  input.value = ''
+}
+
+/**
+ * 拍照导入（微信环境）
  */
 function handlePhoto() {
   if (!ua.isWechat) return
@@ -180,28 +249,28 @@ function handlePhoto() {
     fail: (res) => window.alert(res.errMsg),
     success: (res) => {
       const localId = res.localIds[0]
-      formatLoading.value = true
-      getImageData(localId).then((data) => {
-        const file = base64ToFile(data)
-        const formData = new FormData()
-        formData.append('file', file)
-        const response = wxApi.ocr(formData)
-        response.then(({ data }) => {
-          const imeiList = getSubmitImei(data, IMEI_TYPE.IMEI_OR_SN, undefined).join('\n')
-          const trimed = imei.value.trim()
-          imei.value = trimed ? `${trimed}\n${imeiList}` : imeiList
-        }).catch((err: any) => {
-          if (err.code === 'ECONNABORTED') {
-            toast.error(localStore.localData['submit_RequestTimeout'])
-          } else {
-            toast.error(localStore.localData['submit_RequestError'])
-          }
-        }).finally(() => {
-          formatLoading.value = false
-        })
-      })
+      processOcr(localId)
     },
   })
+}
+
+/**
+ * 导入照片（从相册）
+ */
+function handleImportPhoto() {
+  if (ua.isWechat) {
+    window.wx.chooseImage({
+      sizeType: ['original'],
+      sourceType: ['album'],
+      fail: (res) => window.alert(res.errMsg),
+      success: (res) => {
+        const localId = res.localIds[0]
+        processOcr(localId)
+      },
+    })
+  } else {
+    imageInput.value?.click()
+  }
 }
 
 /**
@@ -244,6 +313,8 @@ function handleScan() {
     uiRoot="sm:max-w-2xl z-[60] relative select-none p-0" ui-header="px-4 pt-2" @close="handleClosed">
     <!-- 隐藏文件选择器 -->
     <input ref="fileInput" type="file" accept=".txt,.csv,.xlsx,.xls" class="hidden" @change="onFilePicked" />
+    <!-- 隐藏图片选择器 -->
+    <input ref="imageInput" type="file" accept="image/*" class="hidden" @change="onImagePicked" />
 
     <div class="flex space-x-3 w-full p-2 border-t border-border">
       <!-- IMEI 输入区 -->
@@ -256,10 +327,12 @@ function handleScan() {
         <div class="flex flex-col space-y-2">
           <XButton @click="handleSubmit" :disabled="formatLoading" :loading="formatLoading"
             :label="localStore.localData['submit_old_ConfirmImport']" />
-          <XButton @click="pickFile" :label="localStore.localData['submit_old_ImportFile']" />
-          <XButton v-if="ua.isWechat" @click="handlePhoto" :disabled="formatLoading"
+          <XButton @click="pickFile" variant="outline" color="success" :label="localStore.localData['submit_old_ImportFile']" />
+          <XButton @click="handleImportPhoto" variant="outline" color="primary"
+            :label="localStore.localData['submit_ImportPhotos']" />
+          <XButton v-if="ua.isWechat" @click="handlePhoto" variant="outline" color="primary" :disabled="formatLoading"
             :label="localStore.localData['submit_TakePhoto']" />
-          <XButton v-if="ua.isWechat" @click="handleScan" :disabled="formatLoading"
+          <XButton v-if="ua.isWechat" @click="handleScan" variant="outline" color="warning" :disabled="formatLoading"
             :label="localStore.localData['submit_old_ScanToImport']" />
           <XButton @click="handleClosed" color="danger" variant="soft"
             :label="localStore.localData['submit_old_ClearData']" />
@@ -294,8 +367,6 @@ function handleScan() {
 
           <XTextarea v-model="remark" rows="10" :placeholder="localStore.localData['submit_ImportRemarkPlaceholder']" />
         </div>
-
-
       </section>
     </div>
   </XDialog>
