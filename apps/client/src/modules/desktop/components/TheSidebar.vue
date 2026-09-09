@@ -12,6 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const wsStore = useWsStore()
 const iStore = useSystemStore()
+const localStore = useLocalStore()
 
 const mode = import.meta.env.VITE_APP_MODE
 // const isLogout = defineModel({ required: true })
@@ -48,7 +49,7 @@ function handle(menu: SidebarMenu) {
 </script>
 
 <template>
-  <aside class="w-sidebar p-4 flex flex-col overflow-y-auto">
+  <aside class="w-sidebar p-4 flex flex-col overflow-y-auto border-r border-dashed">
     <template v-for="menu in menus" :key="menu.path">
       <a v-if="!menu.hide" href="javascript:void(0)" :class="twMerge(
         'flex items-center space-x-2 px-3 py-2 mb-1',
@@ -62,21 +63,22 @@ function handle(menu: SidebarMenu) {
         <span>{{ menu.label }}</span>
       </a>
 
-      <div v-if="menu.hide" class="space-y-2 w-full mt-2 select-none">
-        <div class="bg-zinc-100/20 dark:bg-zinc-800/50  rounded-md p-2 pt-0 border " @click="router.push('/oldSubmit')">
+      <div v-if="menu.hide" class="space-y-2 w-full select-none border-t border-dashed pt-4 mt-2 ">
+        <div class="bg-zinc-100/20 dark:bg-zinc-800/50 group rounded-md p-2 pt-0 border shadow-sm border-blue-500/40 hover:border-red-500/40" @click="router.push('/oldSubmit')">
           <div class="flex flex-col items-start justify-between">
             <div>
               <div class="flex flex-col items-center">
                 <span class="text-xl">📤</span>
-                <h3 class="text-lg font-bold text-blue-500">批量订单查询</h3>
+                <h3 class="text-[17px] font-bold text-blue-500 group-hover:text-red-500 text-center">{{ localStore.localData['submit_Web-based'] }}</h3>
               </div>
 
-              <p class="text-xs text-muted-foreground mt-1">
-                批量提交订单任务，提高工作效率, 支持 Excel CSV等格式文件上传
+              <p class="text-xs text-muted-foreground mt-1 text-center">
+                {{ localStore.localData['submit_Web_based_toast'] }}
               </p>
 
-              <div class="text-blue-500 text-sm text-end font-medium">
-                立即使用 →
+              <div class="flex justify-end items-center text-blue-500 group-hover:text-red-500 text-xs text-end font-medium">
+                <div class="font-bold">{{ localStore.localData['submit_ClickEnter'] }}</div>
+                <Icon class="size-7" icon="game-icons:click"/>
               </div>
             </div>
 

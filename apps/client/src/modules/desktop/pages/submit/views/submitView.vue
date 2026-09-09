@@ -30,12 +30,13 @@ import router from '@/router'
 import { getSubmitImei, normalizeFilterValue } from '@/utils/common'
 import { processedServiceFields } from '../utils/serviceFieldUtils'
 import type { DeleteDataItem } from '../utils/types'
+// import { userApi } from '@/api/user/index.ts'
 
 const store = inject(SUBMIT_STORE)!
 
 store.onClickHeaderDelete = handleDeleteHeader
 
-const { t,locale } = useI18n()
+const { t, locale } = useI18n()
 const serviceStore = useServiceStore()
 const uStore = useUserStore()
 const { connect, close } = useWsStore()
@@ -111,9 +112,9 @@ watch(
     if (isNumeric(id)) {
       store.selectId = +id
       const service = serviceStore.services.get(store.selectId)
-      
+
       await handleSelected(store.selectId)
-      
+
       if (service) {
         const imei = params.imei as string
         const imeis = getSubmitImei(imei, service.imeiType, service?.domesticSerialType)
@@ -182,7 +183,7 @@ async function handleSelected(value: number) {
         imeiList: rejectedOrders.map(x => x.imei),
         idList: [],
       }
-  
+
       await orderApi.deleteCacheImei(deleteData)
     }
   }
@@ -205,8 +206,7 @@ async function handleSelected(value: number) {
     if (
       store.rawOrders.some(x => x.status === ORDER_STATUS.PROCESSING)
       || store.rawOrders.some(x => x.status === ORDER_STATUS.WAIT)
-    )
-    {
+    ) {
       isUseStoraged = true
     }
   }
@@ -252,7 +252,7 @@ async function handleServiceCols(value: number) {
       minWidth: item.width ? +item.width : 180,
       isDynamic: true,
     })
-  )
+    )
 
   store.selectHeaders = columns.value
     .filter(x => x.identifier && x.identifier['isDelCol'])
@@ -274,7 +274,7 @@ async function handleSubmitOrder(id: number) {
   store.rawOrders = data.map((item, i) => ({
     ...item,
     ...(processOrderResult(item.result)),
-    ...({result: item.result}),
+    ...({ result: item.result }),
     index: i + 1,
     isStorage: true,
   }))
@@ -473,6 +473,7 @@ async function handleSubmit() {
 
   if (submited.value || submitOrders.length === 0) return toast.warning(localStore.localData['submit_Repeatedly'])
   const service = serviceStore.services.get(store.selectId!)
+
 
   if (!service) return toast.warning(localStore.localData['submit_ServicePlaceholderTable'])
   if (orders.value.length === 0) return toast.warning(localStore.localData['submit_ExportOrders'])
@@ -694,7 +695,7 @@ async function reset() {
         const deleteSet = new Set(indexes.value)
         if (storageOrderIdsStr !== null) {
           const storageOrderIds: string[] = JSON.parse(storageOrderIdsStr)
-          const needRemoveOrder = store.rawOrders.filter(x => deleteSet.has(x.index)).map(x => x.id?.toString())  
+          const needRemoveOrder = store.rawOrders.filter(x => deleteSet.has(x.index)).map(x => x.id?.toString())
           const needStoragedIds = storageOrderIds.filter(x => !needRemoveOrder.includes(x.toString()))
 
           localStorage.setItem(`${key}_${id}`, JSON.stringify(needStoragedIds))
@@ -703,7 +704,7 @@ async function reset() {
           .filter(item => !deleteSet.has(item.index))
           .map((item, index) => ({
             ...item,
-            ...({index: index + 1})
+            ...({ index: index + 1 })
           }))
       } else {
         store.rawOrders = []
@@ -715,9 +716,9 @@ async function reset() {
       orderTableRef.value?.initCheckedRows()
 
       refreshStatOrders()
-    } catch(ex) {
+    } catch (ex) {
       // console.log(ex)
-    } 
+    }
   }
 
   router.replace({ query: {} })
@@ -738,9 +739,9 @@ function buildDeletedData(data: number[]) {
 
     const data: DeleteDataItem | undefined = item
       ? {
-          imei: item.imei,
-          codeId: item.id
-        }
+        imei: item.imei,
+        codeId: item.id
+      }
       : undefined
 
     if (data) {
@@ -774,7 +775,7 @@ async function handleFresh() {
     store.rawOrders[index] = {
       ...store.rawOrders[index],
       ...(processOrderResult(item.result)),
-      ...({result: item.result}),
+      ...({ result: item.result }),
       status: item.status,
     }
   }
@@ -1002,7 +1003,7 @@ async function cleanup() {
         imeiList: rejectedOrders.map(x => x.imei),
         idList: [],
       }
-  
+
       await orderApi.deleteCacheImei(deleteData)
     }
   }
@@ -1048,6 +1049,33 @@ onMounted(() => {
   threads.value = result
 })
 
+// 停止提交的逻辑
+// async function stopSubmit() {
+//   try {
+//     await serviceApi.stopSubmit()
+    
+//     submited.value = false
+    
+//     store.rawOrders.map(item => {
+//       if (item.status === ORDER_STATUS.PROCESSING) {
+//         item.status = ORDER_STATUS.WAIT
+//       }
+//       return null
+//     }).filter(Boolean)
+//   } catch {
+
+//   } finally {
+//     setTimeout(() => {
+//       uStore.updateCredit()
+//     } , 5000)
+//   }
+// }
+
+// 停止按钮显示与隐藏
+// const isShowStopBtn = computed(() => {
+//   return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
+// })
+
 onBeforeUnmount(() => {
   cleanup().finally()
 })
@@ -1055,68 +1083,46 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="p-4 h-full pb-4 flex flex-col">
-    <section class=
-      "
+    <section class="
         w-full flex items-center justify-between flex-wrap mb-3 space-y-2
-      "
-    >
+      ">
       <div class="flex items-center space-x-2 flex-wrap gap-y-2">
         <SelectService v-model="store.selectId" ui-trigger="w-52" @selected="handleSelected" />
 
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
-        <ButtonGroup
-          :labels="{
-            submit: localStore.localData['submit_Submit'],
-            export: localStore.localData['submit_Export'],
-            clear: localStore.localData['submit_Clear']
-          }"
-          :layouts="[
+        <ButtonGroup :labels="{
+          submit: localStore.localData['submit_Submit'],
+          export: localStore.localData['submit_Export'],
+          clear: localStore.localData['submit_Clear'],
+        }" :layouts="[
             'submit',
             'export',
-            'clear'
-          ]"
-          @submit="handleSubmit"
-          @export="handleExport"
-          @clear="reset"
-        />
+            'clear',
+          ]" @submit="handleSubmit()"  @export="handleExport" @clear="reset" />
 
-        <XButton
-          v-if="selService"
-          :label="localStore.localData['submit_QueryResult']"
-          color="warning"
-          :disabled="disabled"
-          :loading="loading"
-          @click="handleFresh"
-        />
+        <XButtonSplit :label="localStore.localData['submit_Reset']" :options="btnSplitOpts" @click="resetSelectRow" />
 
-        <XButton
-          :label="localStore.localData['history_CopyIMEI']"
-          color="success"
-          variant="soft"
-          @click="handleCopyImei"
-        />
 
-        <XButton
-          v-show="serviceColumns.length !== 0"
-          variant="outline"
-          :label="localStore.localData['submit_FieldsFilter']"
-          color="primary"
-          @click="store.visibleHeaderFilter = true"
-        />
+        <XButton v-if="selService" :label="localStore.localData['submit_QueryResult']" color="warning"
+          :disabled="disabled" :loading="loading" @click="handleFresh" />
 
-        <XButtonSplit
-          :label="localStore.localData['submit_Reset']"
-          :options="btnSplitOpts"
-          @click="resetSelectRow"
-        />
+        <XButton :label="localStore.localData['history_CopyIMEI']" color="success" variant="soft"
+          @click="handleCopyImei" />
 
-        <XButton v-show="mustRead" variant="outline" :label="localStore.localData['submit_ServiceDescription']" color="warning"
-          @click="handleMustRead" />
+        <XButton v-show="serviceColumns.length !== 0" variant="soft"
+          :label="localStore.localData['submit_FieldsFilter']" color="primary"
+          @click="store.visibleHeaderFilter = true" />
 
-        <XSwitch v-model="pushMsg" :left-label="localStore.localData['submit_PushResult']" @change="handlePushMsgChange" />
 
-        <XSwitch v-model="showAll" :left-label="localStore.localData['submit_ShowAll']" v-if="store.selectId" @change="count = 0" />
+        <XButton v-show="mustRead" variant="soft" :label="localStore.localData['submit_ServiceDescription']"
+          color="warning" @click="handleMustRead" />
+
+        <XSwitch v-model="pushMsg" :left-label="localStore.localData['submit_PushResult']"
+          @change="handlePushMsgChange" />
+
+        <XSwitch v-model="showAll" :left-label="localStore.localData['submit_ShowAll']" v-if="store.selectId"
+          @change="count = 0" />
 
         <label class="flex items-center space-x-2">
           <span>{{ localStore.localData['submit_ThreadCount'] }}</span>
@@ -1126,14 +1132,8 @@ onBeforeUnmount(() => {
     </section>
 
     <section class="flex-1 min-h-0">
-      <XTableV2
-        ref="orderTableRef"
-        :columns="columns"
-        :data="orders"
-        selection
-        select-key="index"
-        @selected="handleSelectedIndex"
-      />
+      <XTableV2 ref="orderTableRef" :columns="columns" :data="orders" selection select-key="index"
+        @selected="handleSelectedIndex" />
     </section>
 
     <OrderProgress @changed="processHasChange" />

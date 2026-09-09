@@ -191,15 +191,18 @@ onMounted(async () => {
   <div class="flex flex-col h-screen touch-manipulation text-[9px] md:text-[14px] "
     style="touch-action: pan-x pan-y pinch-zoom">
     <!-- 顶部状态栏 -->
-    <header
-      class=" flex items-center justify-between pl-2 md:pl-4 py-1.5 border-b  text-sm text-black dark:text-white">
+    <header class=" flex items-center justify-between  md: py-1.5 border-b  text-sm text-black dark:text-white">
       <!-- 用户信息区域 -->
       <div class=" flex flex-wrap items-center gap-x-1 md:gap-4 text-[13px] md:text-[14px]">
         <div class="flex items-center gap-1">
-          <span>{{ localStore.localData['submit_old_Points'] }}: </span>
-          <div class="text-blue-500 font-bold mr-1">{{ uStore.info.credits }}</div>
-          <XButton icon="hugeicons:money-bag-02" @click="router.push('/recharge')" variant="soft" :label="localStore.localData['submit_old_Recharge']" size="sm" />
-          <XButton icon="lets-icons:order" @click="router.push('/history')" variant="soft" :label="localStore.localData['submit_OrdersHistory']" size="sm" />
+          <div class="flex bg-success p-1.5 rounded-r-full space-x-1 text-white">
+            <Icon icon="hugeicons:bitcoin-bag" class="size-5" />
+            <span class="text-sm">{{ uStore.info.credits }}</span>
+          </div>
+          <XButton icon="hugeicons:money-bag-02" @click="router.push('/recharge')" variant="soft"
+            :label="localStore.localData['submit_old_Recharge']" size="sm" />
+          <XButton icon="lets-icons:order" @click="router.push('/history')" variant="soft"
+            :label="localStore.localData['submit_OrdersHistory']" size="sm" />
         </div>
       </div>
 

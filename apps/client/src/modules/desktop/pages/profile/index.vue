@@ -3,8 +3,8 @@ import FormCard from './components/FormCard.vue'
 import DataCard from './components/DataCard.vue'
 import BulkApiCard from './components/BulkApiCard.vue'
 import ApiKeyCard from './components/ApiKeyCard.vue'
-import AppCard from '../../components/AppCard.vue'
-import AppCardNew from '../../components/AppCardNew.vue'
+// import AppCard from '../../components/AppCard.vue'
+// import AppCardNew from '../../components/AppCardNew.vue'
 import UnBindDialog from './components/UnBindDialog.vue'
 
 import { wxApi } from '@/api/wx'
@@ -98,8 +98,8 @@ await Promise.all([
             <BulkApiCard />
           </div>
           <div class="flex">
-            <AppCard :is-sidebar="false" v-if="mode === 'SanHe'" />
-            <AppCardNew :is-sidebar="false" />
+            <!-- <AppCard :is-sidebar="false" v-if="mode === 'SanHe'" />
+            <AppCardNew :is-sidebar="false" /> -->
           </div>
         </div>
       </section>

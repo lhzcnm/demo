@@ -53,7 +53,7 @@ const menus: SidebarMenu[] = [
     label: localStore.localData['sidebar_Devices'],
     path: '/device',
     icon: 'iconoir:laptop-charging',
-    hide: hideDevice,
+    hide: hideDevice, //hideDevice
     type: 'basic' as const
   },
   { label: localStore.localData['sidebar_Orders'], path: '/history', icon: 'iconoir:page-flip', type: 'basic' as const },

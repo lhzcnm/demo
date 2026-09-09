@@ -17,5 +17,7 @@ export const serviceApi: ServiceApi = {
       headers: {
       }
     })
-  }
+  },
+  // 停止订单提交接口
+  stopSubmit: () => http.post('/order/PauseOrder')
 }
