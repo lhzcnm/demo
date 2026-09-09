@@ -97,7 +97,7 @@ function handleServiceItemClick(event: MouseEvent) {
   router.push(`/m/submit/${id}`)
 }
 
-const favoriteIds= ref<number[]>()
+const favoriteIds = ref<number[]>()
 
 async function favoriteClick(serviceId: number | undefined) {
   try {
@@ -107,7 +107,7 @@ async function favoriteClick(serviceId: number | undefined) {
   }
 }
 
-onBeforeMount(() =>{
+onBeforeMount(() => {
   favoriteClick(undefined)
 })
 
@@ -126,8 +126,10 @@ onBeforeMount(() =>{
     <section v-if="commonList.length" class="mb-4">
       <h2 class="text-lg font-bold mb-3">{{ localStore.localData['home_Services'] }}</h2>
 
-      <div class="space-y-2" @click="handleServiceItemClick">
-        <ServiceItemCard :favorite-ids="favoriteIds!" v-for="item in commonList"  :key="item.id" :data="item" :data-id="item.id" />
+      <div class="w-full h-[550px] overflow-x-auto overflow-y-hidden grid grid-flow-col grid-rows-5 gap-3 auto-cols-[380px]"
+        @click="handleServiceItemClick">
+        <ServiceItemCard :favorite-ids="favoriteIds!" v-for="item in commonList" :key="item.id" :data="item"
+          :data-id="item.id" />
       </div>
     </section>
 
