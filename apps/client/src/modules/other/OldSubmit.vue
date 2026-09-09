@@ -357,4 +357,4 @@ onMounted(async () => {
     <FavoritePickerDialog v-if="showFavoritePicker" :favorite-ids="favoriteIds" @close="showFavoritePicker = false"
       @refresh="loadFavorites" />
   </div>
-</template>``
+</template>

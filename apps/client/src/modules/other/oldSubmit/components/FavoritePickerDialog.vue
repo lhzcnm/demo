@@ -127,9 +127,9 @@ function handleClose() {
 
 /** 初始化：默认展开所有服务组 */
 onMounted(() => {
-  for (const group of serviceStore.details) {
-    expandedGroups.value.add(group.id)
-  }
+  // for (const group of serviceStore.details) {
+  //   expandedGroups.value.add(group.id)
+  // }
 })
 </script>
 
