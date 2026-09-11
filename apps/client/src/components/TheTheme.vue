@@ -27,7 +27,7 @@ const toggleTheme = () => {
     accesskey="t"
     :class="twMerge(
       'p-2 rounded-full text-muted-foreground transition-colors duration-300',
-      props.ghost ? 'bg-transparent hover:bg-muted' : 'bg-muted hover:bg-accent/20',
+      props.ghost ? 'bg-muted  hover:bg-muted' : 'bg-muted hover:bg-accent/20',
     )"
     aria-label="Toggle theme"
     @click="toggleTheme"

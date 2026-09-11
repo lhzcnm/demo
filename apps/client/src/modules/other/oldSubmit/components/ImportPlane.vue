@@ -310,13 +310,13 @@ function handleScan() {
 
   <!-- 导入弹窗 -->
   <XDialog v-model="open" :maskClosable="false" draggable :title="localStore.localData['submit_ImportButton']"
-    uiRoot="sm:max-w-2xl z-[60] relative select-none p-0" ui-header="px-4 pt-2" @close="handleClosed">
+    uiRoot="sm:max-w-2xl z-[60] relative select-none" ui-header="px-2" @close="handleClosed">
     <!-- 隐藏文件选择器 -->
     <input ref="fileInput" type="file" accept=".txt,.csv,.xlsx,.xls" class="hidden" @change="onFilePicked" />
     <!-- 隐藏图片选择器 -->
     <input ref="imageInput" type="file" accept="image/*" class="hidden" @change="onImagePicked" />
 
-    <div class="flex space-x-3 w-full p-2 border-t border-border">
+    <div class="flex space-x-3 w-full p-2 select-none">
       <!-- IMEI 输入区 -->
       <XTextarea class="text-[16px]" v-model="imei" rows="20" autofocus @dragover.prevent @drop.prevent="handleDrop"
         :placeholder="localStore.localData['submit_old_importToast']" />

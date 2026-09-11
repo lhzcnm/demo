@@ -817,9 +817,11 @@ function openExportDialog() {
   }
 
   exportSelectedKeys.value = columns.value.map(c => String(c.key))
+
+  const date = `${Number(new Date().toISOString().slice(5, 7))}.${Number(new Date().toISOString().slice(8, 10))}`
   const defaultName = selService.value
-    ? `${selService.value.title}_${new Date().toISOString().slice(0, 10)}`
-    : `export_${new Date().toISOString().slice(0, 10)}`
+    ? `(${date})_${selService.value.title}`
+    : `(${date})_export`
   exportFilename.value = defaultName
   exportDialogOpen.value = true
 }
@@ -1105,9 +1107,11 @@ async function handleMustRead() {
 async function handlePushMsgChange(value: boolean) {
   if (value) return
 
-  const result = await xconfirm`
-    ${localStore.localData['submit_PushResultToast']}
-  `
+  const result = await xconfirm({
+    text: localStore.localData['submit_PushResultToast'],
+    confirmText: localStore.localData['submit_FieldsDialogConfirm'],
+  })
+
   if (!result) pushMsg.value = true
 }
 
@@ -1327,12 +1331,14 @@ const btnArr = [
   <div class="p-2 pt-0 h-full  pb-4 flex flex-col">
     <!-- 服务信息及操作栏 -->
     <section
-      class="overflow-x-auto whitespace-nowrap  flex flex-col items-start justify-start space-y-1.5 flex-wrap mb-1">
+      class=" whitespace-nowrap  flex flex-col items-start justify-start space-y-1.5 flex-wrap mb-1">
       <!-- 服务信息 -->
-      <div class="flex justify-center items-center">
+      <div class="flex justify-start items-center select-none w-full overflow-x-auto scroll_hidden">
         <div v-if="selService" class="flex items-center gap-2 pt-1 text-[9px] md:text-md text-muted-foreground">
           <button @click="toggleFavorite(selService.id)"
-            :class="favoriteIds.includes(selService.id) ? 'bg-yellow-500/20 border border-yellow-500/20 ' : 'border bg-gray-500/10'"
+            :class="favoriteIds.includes(selService.id) ? 
+            'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 border border-yellow-200/50 dark:border-yellow-800/50' 
+            : 'border bg-gray-500/10'"
             class="flex-shrink-0 p-1 rounded-md flex flex-col justify-center items-center">
             <Icon :icon="favoriteIds.includes(selService.id) ? 'tabler:star-filled' : 'tabler:star'" :class="[
               'size-4',
@@ -1365,7 +1371,7 @@ const btnArr = [
       </div>
 
       <!-- 操作按钮组 -->
-      <div class="flex gap-1 text-[9px] md:text-sm flex-wrap">
+      <div class="flex gap-1 text-[9px] md:text-sm flex-wrap select-none w-full overflow-x-auto scroll_hidden">
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
         <XButton :size="ua.isMobile ? 'sm' : 'md'" :color="item.color as any" v-for="item in btnArr" @click="item.click"
@@ -1399,7 +1405,7 @@ const btnArr = [
       </div> -->
 
       <!-- 配置选项 -->
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center space-x-2 select-none w-full overflow-x-auto scroll_hidden">
         <label class="flex items-center">
           <span class="text-muted-foreground text-[9px] md:text-sm">{{ localStore.localData['submit_PushResult']
           }}:</span>
@@ -1436,9 +1442,9 @@ const btnArr = [
 
     <!-- 导出配置弹窗 -->
     <XDialog v-model="exportDialogOpen" :title="localStore.localData['submit_old_ExportConfiguration']"
-      :maskClosable="false" uiRoot="max-w-[95vw] sm:max-w-md">
+      :maskClosable="false" uiRoot="max-w-[95vw] sm:max-w-md select-none">
       <template #default>
-        <div class="space-y-4 text-[9px] md:text-sm">
+        <div class="space-y-4 text-[9px] md:text-sm select-none">
           <!-- 文件名 -->
           <div>
             <label class="block mb-1 font-medium">{{ localStore.localData['submit_old_FileName'] }}</label>

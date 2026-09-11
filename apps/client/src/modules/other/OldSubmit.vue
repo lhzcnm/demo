@@ -11,7 +11,7 @@ const localStore = useLocalStore()
 const route = useRoute()
 const router = useRouter()
 
-const showFavorites = ref(false)
+const showFavorites = ref(true)
 const sidebarExpanded = ref(true)
 const ready = ref(false)
 const showFavoritePicker = ref(false)
@@ -191,67 +191,88 @@ onMounted(async () => {
   <div class="flex flex-col h-screen touch-manipulation text-[9px] md:text-[14px] "
     style="touch-action: pan-x pan-y pinch-zoom">
     <!-- 顶部状态栏 -->
-    <header class=" flex items-center justify-between  md: py-1.5 border-b  text-sm text-black dark:text-white">
+    <header
+      class="relative flex items-center justify-between py-2 md:py-2.5 border-b border-slate-200 dark:border-slate-800 text-sm text-black dark:text-white select-none  backdrop-blur-xl z-20">
+
       <!-- 用户信息区域 -->
-      <div class=" flex flex-wrap items-center gap-x-1 md:gap-4 text-[13px] md:text-[14px]">
+      <div class="relative flex flex-wrap items-center gap-x-1 md:gap-2 text-[13px] md:text-[14px]">
+        <!-- 返回首页 -->
+        <div @click="router.push('/submit')"
+          class="group cursor-pointer flex items-center gap-1 px-3 py-1.5 rounded-r-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white text-xs md:text-sm font-medium transition-all">
+          <Icon icon="tabler:arrow-left" class="size-5 transition-transform group-hover:-translate-x-0.5" />
+          <span>{{ localStore.localData['submit_old_return'] }}</span>
+        </div>
+
         <div class="flex items-center gap-1">
-          <div class="flex bg-success p-1.5 rounded-r-full space-x-1 text-white">
-            <Icon icon="hugeicons:bitcoin-bag" class="size-5" />
-            <span class="text-sm">{{ uStore.info.credits }}</span>
+          <!-- 余额 -->
+          <div @click="router.push('/recharge')"
+            class="group flex items-center  px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30 border border-emerald-200/50 dark:border-emerald-800/50">
+            <Icon icon="tabler:coins" class="w-4 h-4 text-emerald-500 mr-1" />
+            <span class="text-[13px] md:text-sm font-semibold text-emerald-500 dark:text-emerald-400">{{
+              uStore.info.credits }} </span>
+            <span class="group-hover:text-blue-500 text-[13px] md:text-sm text-emerald-500 dark:text-emerald-400">({{
+              localStore.localData['submit_old_Recharge'] }}) </span>
           </div>
-          <XButton icon="hugeicons:money-bag-02" @click="router.push('/recharge')" variant="soft"
-            :label="localStore.localData['submit_old_Recharge']" size="sm" />
-          <XButton icon="lets-icons:order" @click="router.push('/history')" variant="soft"
-            :label="localStore.localData['submit_OrdersHistory']" size="sm" />
+
+          <div @click="router.push('/history')"
+            class="group flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-900/30 dark:to-blue-900/30 border border-sky-200/50 dark:border-sky-800/50">
+            <Icon icon="lets-icons:order" class="w-4 h-4 text-sky-500 group-hover:text-blue-500 " />
+            <span class="group-hover:text-blue-500 text-[13px] md:text-sm text-sky-500 dark:text-sky-400">{{
+              localStore.localData['submit_OrdersHistory'] }} </span>
+          </div>
         </div>
       </div>
 
       <!-- 右侧操作按钮 -->
-      <div class="flex items-center gap-1 md:gap-3">
+      <div class="relative flex items-center gap-1 md:gap-3 px-2">
         <LanguageSwitch />
         <TheTheme ghost />
-        <div @click="router.push('/submit')"
-          class="cursor-pointer flex bg-blue-500/20 p-2 pl-3 items-center rounded-l-full text-blue-500 text-xs md:text-[14px] whitespace-nowrap">
-          <div>{{ localStore.localData['submit_old_return'] }}</div>
-          <Icon icon="raphael:arrowleft" class="rotate-180" />
-        </div>
       </div>
     </header>
 
     <!-- 主体区域 -->
     <div class="flex flex-1 min-h-0">
-      <!-- 侧边栏（手机端点击展开/收缩，PC 端固定宽度） -->
-      <aside ref="asideRef" class="flex-shrink-0 overflow-hidden  flex flex-col border-r border-border "
+      <!-- 侧边栏 -->
+      <aside ref="asideRef"
+        class="relative flex-shrink-0 overflow-hidden flex flex-col border-r border-slate-200 dark:border-slate-800 select-none transition-all duration-300"
         :class="[sidebarExpanded ? 'w-40' : 'w-20', 'md:w-64']">
-        <!-- Tab 切换（宽度不够时 Tab 整体换行） -->
-        <div class="flex flex-wrap items-center justify-center border-b border-border">
-          <button @click="showFavorites = false" :class="[
-            'flex-1 min-w-20 p-2 text-[9px] md:text-sm font-medium transition-colors',
-            !showFavorites
-              ? 'text-blue-600  bg-blue-500/20 border-blue-600'
-              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-          ]">
-            {{ localStore.localData['submit_old_allService'] }}
-          </button>
+
+        <!-- Tab 切换 -->
+        <div class="flex p-2 gap-1.5 border-b border-slate-100 dark:border-slate-800 mt-1">
           <button @click="handleFavoritesTabClick" :class="[
-            'flex-1 min-w-20 p-2 text-[9px] md:text-sm font-medium transition-colors',
+            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all rounded-xl flex items-center justify-center gap-1.5 overflow-hidden',
             showFavorites
-              ? 'text-blue-600  bg-blue-500/20 border-blue-600'
-              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           ]">
-            {{ localStore.localData['submit_old_FavoriteServices'] }}
+            <Icon icon="tabler:star" class="w-3.5 h-3.5 flex-shrink-0" />
+            <span class="truncate" :class="sidebarExpanded ? 'inline' : 'hidden md:inline'">{{ localStore.localData['submit_old_FavoriteServices'] }}</span>
+            <div v-if="showFavorites" class="absolute inset-0 bg-white/10 blur-sm pointer-events-none"></div>
           </button>
+
+          <button @click="showFavorites = false" :class="[
+            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all rounded-xl flex items-center justify-center gap-1.5 overflow-hidden',
+            !showFavorites
+              ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+              : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+          ]">
+            <Icon icon="tabler:layout-grid" class="w-3.5 h-3.5 flex-shrink-0" />
+            <span class="truncate" :class="sidebarExpanded ? 'inline' : 'hidden md:inline'">{{ localStore.localData['submit_old_allService'] }}</span>
+            <div v-if="!showFavorites" class="absolute inset-0 bg-white/10 blur-sm pointer-events-none"></div>
+          </button>
+
         </div>
 
         <!-- 搜索框 -->
-        <div v-if="!showFavorites" class="p-1 border-b border-border">
-          <div class="relative">
-            <!-- <Icon icon="tabler:search" class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" /> -->
+        <div v-if="!showFavorites" class="p-2 border-b">
+          <div class="relative group">
+            <Icon icon="tabler:search"
+              class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-slate-500 " />
             <input v-model="searchKeyword" type="text"
               :placeholder="localStore.localData['submit_old_searchServiceInput']"
-              class="w-full pl-1 pr-6 py-2 text-[9px] md:text-sm border border-border rounded bg-white dark:bg-black focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200" />
+              class="w-full pl-8 pr-7 py-1.5 text-[9px] md:text-sm border border-border rounded-lg bg-white dark:bg-black text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30  transition-all" />
             <button v-if="searchKeyword" @click="searchKeyword = ''"
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
               <Icon icon="tabler:x" class="w-3.5 h-3.5" />
             </button>
           </div>
@@ -259,29 +280,36 @@ onMounted(async () => {
 
         <!-- 服务列表 -->
         <div
-          class="flex-1 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          class="flex-1 overflow-y-auto scroll_hidden">
           <!-- 收藏服务 -->
           <template v-if="showFavorites">
-            <!-- 添加收藏服务按钮（固定在列表最上方） -->
-            <div class="sticky top-0 z-10 p-1 border-b border-border bg-white dark:bg-black">
+            <!-- 添加收藏按钮 -->
+            <div class="sticky top-0 z-10 p-2  backdrop-blur-sm border-b border-slate-100 dark:border-slate-800">
               <button @click="showFavoritePicker = true"
-                class="w-full p-1 rounded-md text-[9px] md:text-sm font-semibold bg-blue-500 text-white hover:bg-blue-600">
+                class="group w-full flex items-center justify-center gap-1 p-2 rounded-xl text-[9px] md:text-sm font-medium bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-600 dark:text-blue-400 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 border border-blue-200/50 dark:border-blue-800/50 transition-all shadow-sm">
+                <Icon icon="tabler:plus" class="w-3.5 h-3.5 transition-transform group-hover:rotate-90 duration-300" />
                 {{ localStore.localData['submit_AddFavoriteService'] }}
               </button>
             </div>
             <div v-for="service in favoriteServices" :key="service.id" @click="handleServiceSelect(service.id)" :class="[
-              'flex items-center gap-1 p-1 cursor-pointer border-b border-border overflow-hidden transition-colors',
+              'group relative flex items-center gap-1.5 px-3 py-2 cursor-pointer border-l-2 overflow-hidden transition-all duration-200',
               selectedServiceId === service.id
-                ? 'bg-blue-500 text-white'
-                : 'text-muted-foreground hover:bg-blue-50'
+                ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/10 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
             ]">
-              <span class="font-bold  text-[9px] md:text-sm">{{ service.id }}</span>
-              <span class=" flex-1 text-[9px] md:text-sm">{{ service.title }}</span>
-              <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm"
-                :class="selectedServiceId === service.id ? 'text-gray-200' : 'text-red-500'">{{ service.price }}</span>
+              <!-- 选中态左侧发光指示器 -->
+              <div v-if="selectedServiceId === service.id"
+                class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
+              <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
+              <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
+              <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
+                :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price }}</span>
             </div>
-            <div v-if="favoriteServices.length === 0" class="px-4 py-8 text-center text-sm text-gray-400">
-              {{ localStore.localData['submit_NoServicesAdded'] }}
+            <div v-if="favoriteServices.length === 0"
+              class="flex flex-col items-center justify-center py-10 px-4 text-center">
+              <Icon icon="tabler:star-off" class="w-8 h-8 text-slate-300 dark:text-slate-600 mb-2" />
+              <span class="text-[9px] md:text-sm text-slate-400">{{ localStore.localData['submit_NoServicesAdded']
+              }}</span>
             </div>
           </template>
 
@@ -291,19 +319,24 @@ onMounted(async () => {
             <template v-if="searchKeyword.trim()">
               <div v-for="service in searchFlattenedServices" :key="service.id" @click="handleServiceSelect(service.id)"
                 :class="[
-                  'flex items-center gap-1 p-1 cursor-pointer border-b border-border overflow-hidden transition-colors',
+                  'group relative flex items-center gap-1.5 p-2 cursor-pointer border-l-2 overflow-hidden transition-all duration-200',
                   selectedServiceId === service.id
-                    ? 'bg-blue-600 text-white'
-                    : 'text-muted-foreground hover:bg-blue-50'
+                    ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/10 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                 ]">
-                <span class="font-bold text-[9px] md:text-sm">{{ service.id }}</span>
-                <span class=" flex-1 text-[9px] md:text-sm">{{ service.title }}</span>
-                <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm"
-                  :class="selectedServiceId === service.id ? 'text-gray-200' : 'text-red-500'">{{ service.price
+                <div v-if="selectedServiceId === service.id"
+                  class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
+                <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
+                <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
+                <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
+                  :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price
                   }}</span>
               </div>
-              <div v-if="searchFlattenedServices.length === 0" class="px-4 py-8 text-center text-gray-400">
-                {{ localStore.localData['submit_NoMatchingServices'] }}
+              <div v-if="searchFlattenedServices.length === 0"
+                class="flex flex-col items-center justify-center py-10 px-4 text-center">
+                <Icon icon="tabler:search-off" class="w-8 h-8 text-slate-300 dark:text-slate-600 mb-2" />
+                <span class="text-[9px] md:text-sm text-slate-400">{{ localStore.localData['submit_NoMatchingServices']
+                }}</span>
               </div>
             </template>
 
@@ -312,32 +345,42 @@ onMounted(async () => {
               <template v-for="group in filteredServices" :key="group.id">
                 <!-- 组标题 -->
                 <div @click="toggleGroup(group.id)"
-                  class="flex items-center justify-between p-1 text-blue-600 font-bold  tracking-wide border-b border-border cursor-pointer hover:bg-gray-200 select-none">
-                  <span class="text-[9px] md:text-sm">{{ group.title }}</span>
-                  <Icon :icon="expandedGroups.has(group.id) ? 'tabler:chevron-down' : 'tabler:chevron-right'"
-                    class="w-3.5 h-3.5 transition-transform" />
+                  class="group flex items-center justify-between p-2 text-blue-500 font-semibold tracking-wide border-b border-slate-100 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 select-none transition-colors">
+                  <span class="text-[9px] md:text-sm uppercase">{{ group.title }}</span>
+                  <div v-show="sidebarExpanded" class="flex items-center gap-1">
+                    <span class="text-[9px] md:text-xs text-slate-400 dark:text-slate-500">{{ group.children.length
+                      }}</span>
+                    <Icon :icon="expandedGroups.has(group.id) ? 'tabler:chevron-down' : 'tabler:chevron-right'"
+                      class="w-3.5 h-3.5 transition-transform duration-200 text-slate-400 dark:text-slate-500" />
+                  </div>
                 </div>
 
                 <!-- 组内服务 -->
                 <template v-if="expandedGroups.has(group.id)">
                   <div v-for="service in group.children" :key="service.id" @click="handleServiceSelect(service.id)"
                     :class="[
-                      'flex items-center gap-1 p-1 cursor-pointer border-b border-border overflow-hidden transition-colors',
+                      'group relative flex items-center gap-1.5 p-2 cursor-pointer border-l-2 overflow-hidden transition-all duration-200',
                       selectedServiceId === service.id
-                        ? 'bg-blue-600 text-white'
-                        : 'text-muted-foreground hover:bg-blue-50'
+                        ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/10 text-blue-600 dark:text-blue-400'
+                        : 'border-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                     ]">
-                    <span class="font-bold text-[9px] md:text-sm">{{ service.id }}</span>
-                    <span class=" flex-1 text-[9px] md:text-sm">{{ service.title }}</span>
-                    <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm"
-                      :class="selectedServiceId === service.id ? 'text-gray-200' : 'text-red-500'">{{ service.price
+                    <div v-if="selectedServiceId === service.id"
+                      class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
+                    <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
+                    <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
+                    <span v-show="sidebarExpanded"
+                      class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
+                      :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price
                       }}</span>
                   </div>
                 </template>
               </template>
 
-              <div v-if="filteredServices.length === 0" class="px-4 py-8 text-center text-sm text-gray-400">
-                {{ localStore.localData['submit_NoMatchingServices'] }}
+              <div v-if="filteredServices.length === 0"
+                class="flex flex-col items-center justify-center py-10 px-4 text-center">
+                <Icon icon="tabler:server-off" class="w-8 h-8 text-slate-300 dark:text-slate-600 mb-2" />
+                <span class="text-[9px] md:text-sm text-slate-400">{{ localStore.localData['submit_NoMatchingServices']
+                }}</span>
               </div>
             </template>
           </template>
@@ -345,10 +388,15 @@ onMounted(async () => {
       </aside>
 
       <!-- 主内容区 -->
-      <main class="flex-1 min-w-0 overflow-hidden">
+      <main class="flex-1 min-w-0 overflow-hidden ">
         <submit v-if="ready && selectedServiceId" :id="String(selectedServiceId)" imei="" />
-        <div v-else class="flex flex-col items-center justify-center h-full text-gray-400 text-sm">
-          <p>{{ localStore.localData['submit_TableToast'] }}</p>
+        <div v-else class="flex flex-col items-center justify-center h-full text-slate-400">
+          <div
+            class="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 mb-3">
+            <div class="absolute inset-0 rounded-2xl bg-blue-400/20 blur-xl"></div>
+            <Icon icon="tabler:hand-click" class="relative w-8 h-8 text-blue-400 dark:text-blue-500" />
+          </div>
+          <p class="text-sm">{{ localStore.localData['submit_TableToast'] }}</p>
         </div>
       </main>
     </div>

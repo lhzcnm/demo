@@ -180,7 +180,7 @@ onUnmounted(() => {
       <div class="overflow-x-auto md:overflow-x-visible overflow-y-hidden pb-1 md:pb-2">
         <section class="grid grid-cols-5 gap-1 md:gap-2 min-w-max md:min-w-0 select-none">
           <!-- 总数 -->
-          <div class="flex justify-between bg-sky-500/10 p-1 md:p-2 border-b text-sky-500 rounded-md w-[60px] md:w-auto md:flex-1">
+          <div class="flex w-full justify-between bg-sky-500/10 p-1 md:p-2 border-b text-sky-500 rounded-md w-[60px] md:w-auto md:flex-1">
             <span>{{ localStore.localData["submit_ordergress_total"] }}</span>
             <b>{{ store.progressData.total }}</b>
           </div>

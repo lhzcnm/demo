@@ -20,6 +20,10 @@
   }
 }
 
+.scroll_hidden {
+  @apply [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+}
+
 body {
   @apply bg-background text-foreground;
 }

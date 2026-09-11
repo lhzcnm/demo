@@ -126,7 +126,7 @@ onBeforeMount(() => {
     <section v-if="commonList.length" class="mb-4">
       <h2 class="text-lg font-bold mb-3">{{ localStore.localData['home_Services'] }}</h2>
 
-      <div class="w-full h-[550px] overflow-x-auto overflow-y-hidden grid grid-flow-col grid-rows-5 gap-3 auto-cols-[380px]"
+      <div class="w-full max-h-[550px] overflow-x-auto overflow-y-hidden  grid grid-flow-col grid-rows-5 gap-3 auto-cols-[380px]"
         @click="handleServiceItemClick">
         <ServiceItemCard :favorite-ids="favoriteIds!" v-for="item in commonList" :key="item.id" :data="item"
           :data-id="item.id" />

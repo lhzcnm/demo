@@ -96,7 +96,7 @@ function handleClose() {
 
 <template>
   <XDialog v-model="store.visibleHeaderFilter" :title="localStore.localData['submit_FieldsDialog']"
-    @close="handleClose">
+    @close="handleClose" ui-root="select-none">
     <template #default>
       <div class="filter-modal text-[9px] md:text-[14px]">
         <div class="flex flex-col gap-1 mb-4 max-h-64 overflow-auto">

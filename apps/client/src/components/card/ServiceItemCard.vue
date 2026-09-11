@@ -38,9 +38,9 @@ onMounted(() => {
   <a
     href="javascript:void(0)"
     :class="twJoin(
-      'block p-3 bg-card space-y-1',
+      'block p-2 bg-card space-y-1',
       'hover:border-primary hover:bg-border/60',
-      'border border-border rounded-lg transition-colors')"
+      'border border-border rounded-lg transition-colors flex flex-col justify-evenly')"
   >
     <div class="flex items-center justify-between space-x-2">
       <h3 class="flex items-center space-x-2">
