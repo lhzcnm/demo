@@ -1089,7 +1089,7 @@ onMounted(() => {
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
         <ButtonGroup :labels="{
-          submit: isShowStopBtn ? '停止' : localStore.localData['submit_Submit'],
+          submit: isShowStopBtn ? localStore.localData['submit_Stop'] : localStore.localData['submit_Submit'],
           export: localStore.localData['submit_Export'],
           clear: localStore.localData['submit_Clear'],
         }" :layouts="[

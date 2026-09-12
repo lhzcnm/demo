@@ -1334,7 +1334,7 @@ const btnArr = computed(() => [
     isShow: !isShowStopBtn.value
   },
   {
-    label: '停止',
+    label: localStore.localData['submit_Stop'],
     click: stopSubmit,
     color: 'danger',
     icon: 'bi:stop-circle',
