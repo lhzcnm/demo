@@ -282,18 +282,13 @@ async function handleSelected(value: number) {
   loadFavorites()
 
   await handleServiceCols(value)
+  await handleSubmitOrder(value)
 
-  const key = import.meta.env.VITE_SUBMIT_STORGE
-  const isStoraged = localStorage.getItem(`${key}_${value}`)
-  if (isStoraged || showAll.value) {
-    await handleSubmitOrder(value)
-
-    if (
-      store.rawOrders.some(x => x.status === ORDER_STATUS.PROCESSING)
-      || store.rawOrders.some(x => x.status === ORDER_STATUS.WAIT)
-    ) {
-      isUseStoraged = true
-    }
+  if (
+    store.rawOrders.some(x => x.status === ORDER_STATUS.PROCESSING)
+    || store.rawOrders.some(x => x.status === ORDER_STATUS.WAIT)
+  ) {
+    isUseStoraged = true
   }
 
   const { data } = await orderApi.cacheImei({ serviceId: value })
@@ -482,8 +477,6 @@ async function getSubmitOrderList(orderIds: number[]) {
 
 /**
  * 处理订单结果，解析返回内容
- * @param content - 返回内容字符串
- * @returns 解析后的结果对象
  */
 function processOrderResult(content: string) {
   const result: Record<string, string> = {}
@@ -1304,42 +1297,76 @@ onBeforeUnmount(() => {
   cleanup().finally()
 })
 
-/** 按钮配置数组 */
-const btnArr = [
+// 停止提交的逻辑
+async function stopSubmit() {
+  try {
+    await serviceApi.stopSubmit(store.selectId)
+
+    submited.value = false
+
+    store.rawOrders.map(item => {
+      if (item.status === ORDER_STATUS.PROCESSING) {
+        item.status = ORDER_STATUS.WAIT
+      }
+      return null
+    }).filter(Boolean)
+  } catch {
+
+  } finally {
+    setTimeout(() => {
+      uStore.updateCredit()
+    }, 5000)
+  }
+}
+
+// 停止按钮显示与隐藏
+const isShowStopBtn = computed(() => {
+  return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
+})
+
+/** 按钮配置数组（依赖 isShowStopBtn，需用 computed 保持响应式，并直接过滤隐藏项） */
+const btnArr = computed(() => [
   {
     label: localStore.localData['submit_Submit'],
     click: handleSubmit,
     color: 'success',
-    icon: 'bi:cloud-upload'
+    icon: 'bi:cloud-upload',
+    isShow: !isShowStopBtn.value
+  },
+  {
+    label: '停止',
+    click: stopSubmit,
+    color: 'danger',
+    icon: 'bi:stop-circle',
+    isShow: isShowStopBtn.value
   },
   {
     label: localStore.localData['submit_Export'],
     click: openExportDialog,
     color: 'warning',
-    icon: 'tdesign:folder-export'
+    icon: 'tdesign:folder-export',
+    isShow: true
   },
   {
     label: localStore.localData['submit_Clear'],
     click: reset,
     color: 'danger',
-    icon: 'ant-design:clear-outlined'
+    icon: 'ant-design:clear-outlined',
+    isShow: true
   },
-]
+].filter(item => item.isShow))
 </script>
 
 <template>
   <div class="p-2 pt-0 h-full  pb-4 flex flex-col">
     <!-- 服务信息及操作栏 -->
-    <section
-      class=" whitespace-nowrap  flex flex-col items-start justify-start space-y-1.5 flex-wrap mb-1">
+    <section class=" whitespace-nowrap  flex flex-col items-start justify-start space-y-1.5 flex-wrap mb-1">
       <!-- 服务信息 -->
       <div class="flex justify-start items-center select-none w-full overflow-x-auto scroll_hidden">
         <div v-if="selService" class="flex items-center gap-2 pt-1 text-[9px] md:text-md text-muted-foreground">
-          <button @click="toggleFavorite(selService.id)"
-            :class="favoriteIds.includes(selService.id) ? 
-            'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 border border-yellow-200/50 dark:border-yellow-800/50' 
-            : 'border bg-gray-500/10'"
-            class="flex-shrink-0 p-1 rounded-md flex flex-col justify-center items-center">
+          <button @click="toggleFavorite(selService.id)" :class="favoriteIds.includes(selService.id) ?
+            'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 border border-yellow-200/50 dark:border-yellow-800/50'
+            : 'border bg-gray-500/10'" class="flex-shrink-0 p-1 rounded-md flex flex-col justify-center items-center">
             <Icon :icon="favoriteIds.includes(selService.id) ? 'tabler:star-filled' : 'tabler:star'" :class="[
               'size-4',
               favoriteIds.includes(selService.id) ? 'text-yellow-400' : 'text-gray-400 hover:text-gray-500'
@@ -1374,8 +1401,8 @@ const btnArr = [
       <div class="flex gap-1 text-[9px] md:text-sm flex-wrap select-none w-full overflow-x-auto scroll_hidden">
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
-        <XButton :size="ua.isMobile ? 'sm' : 'md'" :color="item.color as any" v-for="item in btnArr" @click="item.click"
-          :label="item.label" :icon="item.icon" variant="outline" />
+        <XButton v-for="item in btnArr" :key="item.label" :size="ua.isMobile ? 'sm' : 'md'" :color="item.color as any"
+          @click="item.click" :label="item.label" :icon="item.icon" variant="outline" />
 
         <XButton v-if="selService" @click="handleFresh" :label="localStore.localData['submit_QueryResult']"
           :size="ua.isMobile ? 'sm' : 'md'" color="primary" variant="soft" />

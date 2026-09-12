@@ -19,5 +19,5 @@ export const serviceApi: ServiceApi = {
     })
   },
   // 停止订单提交接口
-  stopSubmit: () => http.post('/order/PauseOrder')
+  stopSubmit: (id) => http.post('/order/PauseOrder', { serviceId: id })
 }

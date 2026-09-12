@@ -10,7 +10,7 @@ export interface ServiceApi {
   getTemplate: (serviceId: number) => R<string>
   getQuoteImage: () => R<any>
   importFile: (params: FormData) => R<fileDataType>
-  stopSubmit: () => R<any>
+  stopSubmit: (id: number) => R<any>
 }
 
 export interface fileDataType{

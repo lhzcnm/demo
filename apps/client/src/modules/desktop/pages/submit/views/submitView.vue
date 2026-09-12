@@ -197,18 +197,13 @@ async function handleSelected(value: number) {
   selService.value = serviceStore.services.get(value)!
 
   await handleServiceCols(value)
+  await handleSubmitOrder(value)
 
-  const key = import.meta.env.VITE_SUBMIT_STORGE
-  const isStoraged = localStorage.getItem(`${key}_${value}`)
-  if (isStoraged || showAll.value) {
-    await handleSubmitOrder(value)
-
-    if (
-      store.rawOrders.some(x => x.status === ORDER_STATUS.PROCESSING)
-      || store.rawOrders.some(x => x.status === ORDER_STATUS.WAIT)
-    ) {
-      isUseStoraged = true
-    }
+  if (
+    store.rawOrders.some(x => x.status === ORDER_STATUS.PROCESSING)
+    || store.rawOrders.some(x => x.status === ORDER_STATUS.WAIT)
+  ) {
+    isUseStoraged = true
   }
 
   const { data } = await orderApi.cacheImei({ serviceId: value })
@@ -1029,6 +1024,38 @@ const handleThreadChange = debounce(async () => {
   await serviceApi.setThread(threads.value)
 })
 
+
+// 停止提交的逻辑
+async function stopSubmit() {
+  try {
+    await serviceApi.stopSubmit(store.selectId)
+
+    submited.value = false
+
+    store.rawOrders.map(item => {
+      if (item.status === ORDER_STATUS.PROCESSING) {
+        item.status = ORDER_STATUS.WAIT
+      }
+      return null
+    }).filter(Boolean)
+  } catch {
+
+  } finally {
+    setTimeout(() => {
+      uStore.updateCredit()
+    }, 5000)
+  }
+}
+
+// 停止按钮显示与隐藏
+const isShowStopBtn = computed(() => {
+  return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
+})
+
+onBeforeUnmount(() => {
+  cleanup().finally()
+})
+
 onMounted(() => {
   const raw = localStorage.getItem(`${threadKey}_${uStore.info.userId}`)
   if (raw === null) {
@@ -1049,36 +1076,6 @@ onMounted(() => {
   threads.value = result
 })
 
-// 停止提交的逻辑
-// async function stopSubmit() {
-//   try {
-//     await serviceApi.stopSubmit()
-    
-//     submited.value = false
-    
-//     store.rawOrders.map(item => {
-//       if (item.status === ORDER_STATUS.PROCESSING) {
-//         item.status = ORDER_STATUS.WAIT
-//       }
-//       return null
-//     }).filter(Boolean)
-//   } catch {
-
-//   } finally {
-//     setTimeout(() => {
-//       uStore.updateCredit()
-//     } , 5000)
-//   }
-// }
-
-// 停止按钮显示与隐藏
-// const isShowStopBtn = computed(() => {
-//   return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
-// })
-
-onBeforeUnmount(() => {
-  cleanup().finally()
-})
 </script>
 
 <template>
@@ -1092,14 +1089,14 @@ onBeforeUnmount(() => {
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
         <ButtonGroup :labels="{
-          submit: localStore.localData['submit_Submit'],
+          submit: isShowStopBtn ? '停止' : localStore.localData['submit_Submit'],
           export: localStore.localData['submit_Export'],
           clear: localStore.localData['submit_Clear'],
         }" :layouts="[
-            'submit',
-            'export',
-            'clear',
-          ]" @submit="handleSubmit()"  @export="handleExport" @clear="reset" />
+          'submit',
+          'export',
+          'clear',
+        ]" @submit="isShowStopBtn ? stopSubmit() : handleSubmit()" @export="handleExport" @clear="reset" />
 
         <XButtonSplit :label="localStore.localData['submit_Reset']" :options="btnSplitOpts" @click="resetSelectRow" />
 

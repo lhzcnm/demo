@@ -18,7 +18,7 @@ const adminKey = import.meta.env.VITE_ADMIN_TOKEN
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: { Authorization: getToken(accrssKey) },
+  headers: { Authorization: getToken(accrssKey) , "X-Client-Type": "web" },
   timeout: 5000 * 60,
 })
 
