@@ -254,6 +254,10 @@ async function getDefaultColumns() {
  * @param value - 服务 ID
  */
 async function handleSelected(value: number) {
+  imeis.value = []
+  comments.value = ''
+  indexes.value = []
+  
   if (!value) return
   close()
 
@@ -1298,31 +1302,31 @@ onBeforeUnmount(() => {
 })
 
 // 停止提交的逻辑
-async function stopSubmit() {
-  try {
-    await serviceApi.stopSubmit(store.selectId)
+// async function stopSubmit() {
+//   try {
+//     await serviceApi.stopSubmit(store.selectId)
 
-    submited.value = false
+//     submited.value = false
 
-    store.rawOrders.map(item => {
-      if (item.status === ORDER_STATUS.PROCESSING) {
-        item.status = ORDER_STATUS.WAIT
-      }
-      return null
-    }).filter(Boolean)
-  } catch {
+//     store.rawOrders.map(item => {
+//       if (item.status === ORDER_STATUS.PROCESSING) {
+//         item.status = ORDER_STATUS.WAIT
+//       }
+//       return null
+//     }).filter(Boolean)
+//   } catch {
 
-  } finally {
-    setTimeout(() => {
-      uStore.updateCredit()
-    }, 5000)
-  }
-}
+//   } finally {
+//     setTimeout(() => {
+//       uStore.updateCredit()
+//     }, 5000)
+//   }
+// }
 
 // 停止按钮显示与隐藏
-const isShowStopBtn = computed(() => {
-  return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
-})
+// const isShowStopBtn = computed(() => {
+//   return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
+// })
 
 /** 按钮配置数组（依赖 isShowStopBtn，需用 computed 保持响应式，并直接过滤隐藏项） */
 const btnArr = computed(() => [
@@ -1331,15 +1335,15 @@ const btnArr = computed(() => [
     click: handleSubmit,
     color: 'success',
     icon: 'bi:cloud-upload',
-    isShow: !isShowStopBtn.value
+    isShow: true
   },
-  {
-    label: localStore.localData['submit_Stop'],
-    click: stopSubmit,
-    color: 'danger',
-    icon: 'bi:stop-circle',
-    isShow: isShowStopBtn.value
-  },
+  // {
+  //   label: localStore.localData['submit_Stop'],
+  //   click: stopSubmit,
+  //   color: 'danger',
+  //   icon: 'bi:stop-circle',
+  //   isShow: isShowStopBtn.value
+  // },
   {
     label: localStore.localData['submit_Export'],
     click: openExportDialog,

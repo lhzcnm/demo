@@ -171,6 +171,10 @@ async function getDefaultColumns() {
 }
 
 async function handleSelected(value: number) {
+  imeis.value = []
+  comments.value = ''
+  indexes.value = []
+
   if (!value) return
   close()
 
@@ -1026,31 +1030,31 @@ const handleThreadChange = debounce(async () => {
 
 
 // 停止提交的逻辑
-async function stopSubmit() {
-  try {
-    await serviceApi.stopSubmit(store.selectId)
+// async function stopSubmit() {
+//   try {
+//     await serviceApi.stopSubmit(store.selectId)
 
-    submited.value = false
+//     submited.value = false
 
-    store.rawOrders.map(item => {
-      if (item.status === ORDER_STATUS.PROCESSING) {
-        item.status = ORDER_STATUS.WAIT
-      }
-      return null
-    }).filter(Boolean)
-  } catch {
+//     store.rawOrders.map(item => {
+//       if (item.status === ORDER_STATUS.PROCESSING) {
+//         item.status = ORDER_STATUS.WAIT
+//       }
+//       return null
+//     }).filter(Boolean)
+//   } catch {
 
-  } finally {
-    setTimeout(() => {
-      uStore.updateCredit()
-    }, 5000)
-  }
-}
+//   } finally {
+//     setTimeout(() => {
+//       uStore.updateCredit()
+//     }, 5000)
+//   }
+// }
 
 // 停止按钮显示与隐藏
-const isShowStopBtn = computed(() => {
-  return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
-})
+// const isShowStopBtn = computed(() => {
+//   return store.rawOrders.some(item => item.status === ORDER_STATUS.PROCESSING)
+// })
 
 onBeforeUnmount(() => {
   cleanup().finally()
@@ -1089,14 +1093,14 @@ onMounted(() => {
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
         <ButtonGroup :labels="{
-          submit: isShowStopBtn ? localStore.localData['submit_Stop'] : localStore.localData['submit_Submit'],
+          submit: localStore.localData['submit_Submit'],
           export: localStore.localData['submit_Export'],
           clear: localStore.localData['submit_Clear'],
         }" :layouts="[
           'submit',
           'export',
           'clear',
-        ]" @submit="isShowStopBtn ? stopSubmit() : handleSubmit()" @export="handleExport" @clear="reset" />
+        ]" @submit="handleSubmit()" @export="handleExport" @clear="reset" />
 
         <XButtonSplit :label="localStore.localData['submit_Reset']" :options="btnSplitOpts" @click="resetSelectRow" />
 
