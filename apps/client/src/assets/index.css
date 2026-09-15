@@ -28,6 +28,11 @@ body {
   @apply bg-background text-foreground;
 }
 
+input, textarea, select, 
+input:focus, textarea:focus, select:focus {
+  font-size: 16px !important;
+}
+
 /* Scrollbar */
 * {
   scrollbar-width: thin;
