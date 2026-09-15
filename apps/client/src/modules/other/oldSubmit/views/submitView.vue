@@ -1267,21 +1267,19 @@ function processHasChange() {
  * 处理线程数变化（防抖）
  */
 const handleThreadChange = debounce(async () => {
-  localStorage.setItem(`${threadKey}_${uStore.info.userId}`, threads.value.toString())
+  // localStorage.setItem(`${threadKey}_${uStore.info.userId}`, threads.value.toString())
   await serviceApi.setThread(threads.value)
 })
 
 /**
  * 组件挂载时初始化线程数配置
  */
-onMounted(() => {
-  const raw = localStorage.getItem(`${threadKey}_${uStore.info.userId}`)
-  if (raw === null) {
-    threads.value = 5
-    return
-  }
+onMounted(async () => {
+  const raw = await serviceApi.getThread()
 
-  const value = Number(raw)
+  threads.value = raw.data
+
+  const value = Number(raw.data)
 
   let result = 5
 

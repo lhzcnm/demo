@@ -1024,7 +1024,7 @@ function processHasChange() {
 }
 
 const handleThreadChange = debounce(async () => {
-  localStorage.setItem(`${threadKey}_${uStore.info.userId}`, threads.value.toString())
+  // localStorage.setItem(`${threadKey}_${uStore.info.userId}`, threads.value.toString())
   await serviceApi.setThread(threads.value)
 })
 
@@ -1060,14 +1060,12 @@ onBeforeUnmount(() => {
   cleanup().finally()
 })
 
-onMounted(() => {
-  const raw = localStorage.getItem(`${threadKey}_${uStore.info.userId}`)
-  if (raw === null) {
-    threads.value = 5
-    return
-  }
+onMounted(async () => {
+  const raw = await serviceApi.getThread()
 
-  const value = Number(raw)
+  threads.value = raw.data
+
+  const value = Number(raw.data)
 
   let result = 5
 
