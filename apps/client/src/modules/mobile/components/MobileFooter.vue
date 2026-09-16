@@ -11,7 +11,7 @@ const routes = [
   { name: localStore.localData['top_Home'], path: '/m', icon: 'iconoir:home-alt-slim-horiz' },
   { name: localStore.localData['top_Orders'], path: '/m/history', icon: 'iconoir:page-flip' },
   { name: localStore.localData['top_SubmitOrder'], path: '/m/submit', icon: 'iconoir:atom' },
-  { name: '批量查询', path: '/m/oldSubmit', icon: 'icon-park-outline:upload-logs' },
+  { name: localStore.localData['submit_BatchQuery'], path: '/m/oldSubmit', icon: 'icon-park-outline:upload-logs' },
   {
     name: localStore.localData['top_Feedback'],
     path: '/m/ticket',

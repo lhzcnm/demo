@@ -59,6 +59,8 @@ const menus: SidebarMenu[] = [
   { label: localStore.localData['sidebar_Orders'], path: '/history', icon: 'iconoir:page-flip', type: 'basic' as const },
   { label: localStore.localData['sidebar_AddFunds'], path: '/recharge', icon: 'iconoir:credit-card', type: 'basic' as const },
   { label: localStore.localData['sidebar_Consumes'], path: '/credits', icon: 'iconoir:bitcoin-rotate-out', type: 'basic' as const },
+  // { label: '公告信息', path: '/todo', icon: 'iconoir:bitcoin-rotate-out', type: 'basic' as const },
+
   {
     label: localStore.localData['sidebar_Tickets'],
     path: '/ticket',

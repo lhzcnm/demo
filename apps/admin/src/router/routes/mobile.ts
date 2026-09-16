@@ -8,6 +8,7 @@ import wechat from './mobile/wechat'
 import activities from './mobile/activity'
 import monitors from './mobile/monitor'
 import local from './mobile/local'
+import notices from './mobile/notice'
 
 const mobile: RouteRecordRaw = {
   path: '/m',
@@ -23,6 +24,7 @@ const mobile: RouteRecordRaw = {
     ...activities,
     ...monitors,
     ...local,
+    ...notices,
     {
       path: 'dashboard',
       name: 'Dashboard',

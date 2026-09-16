@@ -203,7 +203,7 @@ onMounted(async () => {
           <span>{{ localStore.localData['submit_old_return'] }}</span>
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1 flex-1">
           <!-- 余额 -->
           <div @click="router.push('/recharge')"
             class="group flex items-center  px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/30 dark:to-green-900/30 border border-emerald-200/50 dark:border-emerald-800/50">
@@ -346,7 +346,7 @@ onMounted(async () => {
                 <!-- 组标题 -->
                 <div @click="toggleGroup(group.id)"
                   class="group flex items-center justify-between p-2 text-blue-500 font-semibold tracking-wide border-b border-slate-100 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 select-none transition-colors">
-                  <span class="text-[9px] md:text-sm uppercase">{{ group.title }}</span>
+                  <span class="text-[9px] md:text-sm">{{ group.title }}</span>
                   <div v-show="sidebarExpanded" class="flex items-center gap-1">
                     <span class="text-[9px] md:text-xs text-slate-400 dark:text-slate-500">{{ group.children.length
                       }}</span>

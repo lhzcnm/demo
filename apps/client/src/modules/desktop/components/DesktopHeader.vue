@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TodoMsg from '@/components/TodoMsg.vue'
 import { useSystemStore } from '@/stores/system'
 import { Icon } from '@iconify/vue'
 import { twJoin } from 'tailwind-merge'
@@ -77,7 +78,7 @@ function goToInstruction() {
           <span class="text-sm">{{ uStore.info.credits }}</span>
         </RouterLink>
 
-
+        <TodoMsg/>
         <LanguageSwitch />
         <TheTheme />
         <TheAvatar class="size-8" />

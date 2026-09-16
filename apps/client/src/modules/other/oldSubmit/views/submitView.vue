@@ -119,7 +119,7 @@ const exportSelectedKeys = ref<string[]>([])
 const columns = shallowRef<XTableV2Column<OrderTableView>[]>([])
 
 /** 线程数存储 key */
-const threadKey = import.meta.env.VITE_THREAD_STORAGE
+// const threadKey = import.meta.env.VITE_THREAD_STORAGE
 
 /** 重置按钮下拉选项 */
 const btnSplitOpts: XBtnSplitOptions = [

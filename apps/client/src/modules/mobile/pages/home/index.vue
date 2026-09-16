@@ -53,6 +53,8 @@ onMounted(async () => {
 })
 
 const commonList = getCommonList(store.services)
+// 根据数据量动态决定行数，避免数据少时占用过多纵向空间（最多 5 行/列）
+const gridRowsClass = (['grid-rows-1', 'grid-rows-2', 'grid-rows-3', 'grid-rows-4', 'grid-rows-5'][Math.min(commonList.length, 5) - 1]) ?? 'grid-rows-5'
 const { totalPages, currentPage, pages, handleScroll, scrollToPage, isScrolling, carouselRef } = usePage()
 
 const router = useRouter()
@@ -126,8 +128,10 @@ onBeforeMount(() => {
     <section v-if="commonList.length" class="mb-4">
       <h2 class="text-lg font-bold mb-3">{{ localStore.localData['home_Services'] }}</h2>
 
-      <div class="w-full max-h-[550px] overflow-x-auto overflow-y-hidden  grid grid-flow-col grid-rows-5 gap-3 auto-cols-[380px]"
-        @click="handleServiceItemClick">
+      <div :class="twJoin(
+        'w-full max-h-[550px] overflow-x-auto overflow-y-hidden grid grid-flow-col gap-3 auto-cols-[380px]',
+        gridRowsClass
+      )" @click="handleServiceItemClick">
         <ServiceItemCard :favorite-ids="favoriteIds!" v-for="item in commonList" :key="item.id" :data="item"
           :data-id="item.id" />
       </div>

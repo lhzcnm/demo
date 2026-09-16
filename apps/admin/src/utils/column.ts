@@ -23,6 +23,9 @@ export enum ColumnEnum {
   // monitor
   Monitor,
 
+  // notice
+  Notice,
+
   // order
   Order,
   OrderVerify,
@@ -75,6 +78,7 @@ const columnMap: ColumnMap = {
   [ColumnEnum.Locale]: { key: 'locale_column' },
   [ColumnEnum.Logs]: { key: 'logs_column' },
   [ColumnEnum.Monitor]: { key: 'monitor_column' },
+  [ColumnEnum.Notice]: { key: 'notice_column' },
   [ColumnEnum.Order]: { key: 'order_column' },
   [ColumnEnum.OrderVerify]: { key: 'order_verify_column' },
   [ColumnEnum.Oss]: { key: 'oss_column' },

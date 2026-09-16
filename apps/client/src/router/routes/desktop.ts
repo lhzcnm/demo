@@ -49,6 +49,11 @@ const home: RouteRecordRaw = {
       name: 'Profile',
       component: () => import('@desktop/pages/profile/index.vue'),
     },
+    {
+      path: 'todo',
+      name: 'Todo',
+      component: () => import('@desktop/pages/todo/index.vue'),
+    },
     // {
     //   path: '/quotation',
     //   name: 'quotation',

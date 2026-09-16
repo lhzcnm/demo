@@ -65,7 +65,7 @@ const indexes = ref<number[]>([])
 
 const columns = shallowRef<XTableV2Column<OrderTableView>[]>([])
 
-const threadKey = import.meta.env.VITE_THREAD_STORAGE
+// const threadKey = import.meta.env.VITE_THREAD_STORAGE
 
 const btnSplitOpts: XBtnSplitOptions = [
   {

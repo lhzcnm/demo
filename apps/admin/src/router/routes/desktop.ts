@@ -7,6 +7,7 @@ import orders from './desktop/orders'
 import tools from './desktop/tools'
 import recharge from './desktop/recharge'
 import activities from './desktop/activity'
+import notices from './desktop/notice'
 import monitors from './desktop/monitor'
 import print from './desktop/print'
 import local from './desktop/local'
@@ -26,6 +27,7 @@ const desktop: RouteRecordRaw = {
     ...tools,
     ...recharge,
     ...activities,
+    ...notices,
     ...monitors,
     ...print,
     ...local,

@@ -47,6 +47,12 @@ const mobile: RouteRecordRaw = {
       component: () => import('@mobile/pages/ticket/index.vue'),
     },
     {
+      path: 'todo',
+      name: 'Todo',
+      meta: { hideHeader: true },
+      component: () => import('@mobile/pages/todo/index.vue'),
+    },
+    {
       path: 'profile',
       name: 'Profile',
       meta: { hideHeader: true },
