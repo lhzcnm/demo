@@ -75,16 +75,18 @@ function handleServiceItemClick(event: MouseEvent) {
     <XBulletinBoard v-if="iStore.settings.enableScrollingAnnc" class="mb-4" :text="bulletinBoardText"
       :style="{ '--bg': 'hsl(var(--card))' }" />
 
-    <section class="grid gap-2 md:gap-4 grid-cols-[repeat(auto-fill,minmax(280px,_1fr))]">
-      <ServiceGroupCard v-for="group in store.details" :key="group.id" :group="group" @click="openGroupDialog(group)" />
-    </section>
-
+      
     <section v-if="commonList.length" class="my-8">
       <h2 class="text-xl font-bold mb-3">{{ localStore.localData['home_Services'] }}</h2>
       <div class="grid gap-2 md:gap-4 grid-cols-[repeat(auto-fill,minmax(280px,_1fr))]" @click="handleServiceItemClick">
         <ServiceItemCard v-for="item in commonList" :key="item.id" :data="item" :data-id="item.id" />
       </div>
     </section>
+
+    <section class="grid gap-2 md:gap-4 grid-cols-[repeat(auto-fill,minmax(280px,_1fr))]">
+      <ServiceGroupCard v-for="group in store.details" :key="group.id" :group="group" @click="openGroupDialog(group)" />
+    </section>
+
 
     <!-- <section class="mt-8">
       <h2 class="text-xl font-bold mb-3">{{ t('quotation.title') }}</h2>
