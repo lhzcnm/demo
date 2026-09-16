@@ -79,7 +79,7 @@ async function handleUpdate() {
     v-model="store.visibleBase"
     :title="options[mode].title"
     draggable
-    ui-root="sm:p-0 sm:max-w-7xl"
+    ui-root="sm:p-0 sm:max-w-4xl"
     ui-header="p-4 mb-0 border-b"
   >
     <template #default>
