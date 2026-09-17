@@ -1456,8 +1456,17 @@ const btnArr = computed(() => [
 
     <!-- 表格区域 -->
     <section class="flex-1 min-h-0">
-      <XTableV2 uiHeader="py-1 text-[9px] md:text-sm" ui-column="text-[8px] px-0 md:text-sm" ref="orderTableRef"
-        :columns="columns" :data="orders" selection select-key="index" @selected="handleSelectedIndex" />
+      <XTableV2
+        ref="orderTableRef"
+        uiHeader="py-1 text-[9px] md:text-sm"
+        ui-column="text-[8px] px-0 md:text-sm"
+        :columns="columns"
+        :data="orders"
+        selection
+        select-key="index"
+        is-drag-header
+        @selected="handleSelectedIndex"
+      />
     </section>
 
     <!-- 订单进度 -->
