@@ -1131,8 +1131,15 @@ onMounted(async () => {
     </section>
 
     <section class="flex-1 min-h-0">
-      <XTableV2 ref="orderTableRef" :columns="columns" :data="orders" selection select-key="index"
-        @selected="handleSelectedIndex" />
+      <XTableV2
+        ref="orderTableRef"
+        :columns="columns"
+        :data="orders"
+        selection
+        select-key="index"
+        is-drag-header
+        @selected="handleSelectedIndex"
+      />
     </section>
 
     <OrderProgress @changed="processHasChange" />
