@@ -14,29 +14,32 @@ const props = defineProps<NoticeActionProps>()
 
 const store = inject(NOTICE_STORE)!
 
-const options = [
+const options = computed(() => [
   {
     icon: "lucide:clipboard-edit",
     label: "编辑",
     command: openEdit,
     colors: 'primary',
-    variant: 'outline'
+    variant: 'soft',
+    disabled: props.row.publishStatus == 0,
   },
   {
     icon: "lucide:send",
     label: "发布",
     command: handlePublish,
     colors: 'success',
-    variant: 'soft'
+    variant: 'soft',
+    disabled: props.row.publishStatus == 0,
   },
   {
     icon: "lucide:trash-2",
     label: "删除",
     command: handleDelete,
     colors: 'danger',
-    variant: 'soft'
+    variant: 'soft',
+    disabled: true,
   },
-]
+])
 
 function openEdit() {
   store.index = props.index
@@ -45,13 +48,13 @@ function openEdit() {
 }
 
 async function handlePublish() {
-  if (!await xconfirm("是否确认发布该公告？发布后前台用户将可见")) return
+  if (!await xconfirm("是否确认发布该公告？发布后前台用户可收到, 后台将无法修改已发布公告")) return
 
   try {
     await publishNotice(props.row.id)
     toast.success("发布成功")
     store.refresh = !store.refresh
-  } catch { } finally {}
+  } catch { } finally { }
 }
 
 async function handleDelete() {
@@ -63,10 +66,13 @@ async function handleDelete() {
     store.refresh = !store.refresh
   } catch {
 
-  } finally {}
+  } finally { }
 }
 </script>
 
 <template>
-  <XButton v-for="item in options" @click="item?.command()" :label="item?.label" :icon="item?.icon" :color="item.colors as any" :variant="item.variant as any"  size="sm"/>
+  <div class="w-full flex space-x-2">
+    <XButton v-for="item in options" v-show="item?.disabled" @click="item?.command()" :label="item?.label"
+    :icon="item?.icon" :color="item.colors as any" :variant="item.variant as any" size="sm" class="w-full" />
+  </div>
 </template>

@@ -51,7 +51,7 @@ async function handleSubmit() {
 async function handleCreate() {
   try {
     await createNotice(store.formBase)
-    toast.success("添加成功")
+    toast.success("新增成功-无修改,请点击发布推送前台")
     store.refresh = !store.refresh
   } catch {  } finally {
     store.visibleBase = false
@@ -66,7 +66,7 @@ async function handleUpdate() {
       ...store.formBase,
       id: id,
     })
-    toast.success("更新成功")
+    toast.success("更新成功-请点击发布推送前台")
     store.refresh = !store.refresh
   } catch { } finally {
     store.visibleBase = false
