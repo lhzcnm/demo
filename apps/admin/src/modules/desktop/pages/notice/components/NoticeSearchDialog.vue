@@ -27,13 +27,7 @@ function handleSubmit() {
 </script>
 
 <template>
-  <XDialog
-    v-model="store.visibleSearch"
-    draggable
-    title="公告筛选"
-    ui-root="sm:max-w-md"
-    @close="handleCancel"
-  >
+  <XDialog v-model="store.visibleSearch" draggable title="公告筛选" ui-root="sm:max-w-md" @close="handleCancel">
     <template #default>
       <NoticeSearchForm v-model="copied" />
     </template>

@@ -71,7 +71,7 @@ async function handleToggleStatus() {
 }
 
 async function handlePublish() {
-  if (!await xconfirm("是否确认发布该公告？发布后前台用户将可见")) return
+  if (!await xconfirm("是否确认发布该公告？发布后前台用户可收到, 后台将无法修改已发布公告")) return
 
   try {
     await publishNotice(notice.id)
@@ -111,6 +111,7 @@ async function handleDelete() {
       </div>
 
       <XTag :color="status.color" :label="status.label" size="sm" class="shrink-0" />
+      <XTag :color="notice.publishStatus == 0 ? 'info' : 'success'" :label="notice.publishStatus == 0 ? '未发布' : '已发布'" size="sm" class="shrink-0" />
     </div>
 
     <!-- 中文内容预览 -->
@@ -156,10 +157,10 @@ async function handleDelete() {
         <!-- 启用/禁用 -->
         <Icon @click="handleToggleStatus" :icon="isEnabled ? 'lucide:power-off' : 'lucide:zap'" class="size-4" />
         <!-- 发布 -->
-        <Icon @click="handlePublish" icon="lucide:send" class="size-4 hover:text-blue-500 cursor-pointer" />
+        <Icon @click="handlePublish" v-if=" notice.publishStatus == 0" icon="lucide:send" class="size-4 hover:text-blue-500 cursor-pointer" />
 
         <!-- 编辑 -->
-        <Icon @click="openUpdate" icon="lucide:clipboard-edit" class="size-4" />
+        <Icon @click="openUpdate"  v-if=" notice.publishStatus == 0" icon="lucide:clipboard-edit" class="size-4" />
       </div>
     </div>
 

@@ -3,17 +3,48 @@ import { EditorContent, Editor } from '@tiptap/vue-3'
 import { Icon } from '@iconify/vue'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
+import TextStyle from '@tiptap/extension-text-style'
 import TextAlign from '@tiptap/extension-text-align'
 import Placeholder from '@tiptap/extension-placeholder'
 import Link from '@tiptap/extension-link'
+import { toast } from 'vue-sonner'
+
+import FontSizePicker from '@desktop/pages/editor/components/FontSizePicker.vue'
+import TextColorPicker from '@desktop/pages/editor/components/TextColorPicker.vue'
+import SetLinkDialog from '@desktop/pages/editor/components/SetLinkDialog.vue'
+import { setLinkConfirm } from '@desktop/pages/editor/utils/setLinkConfirm'
 
 const model = defineModel<string>({ required: true })
+
+const ExtTextStyle = TextStyle.extend({
+  addAttributes() {
+    return {
+      fontSize: {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.style.fontSize,
+        renderHTML: (attributes: Record<string, any>) => {
+          if (!attributes.fontSize) return {}
+          return { style: `font-size: ${attributes.fontSize}` }
+        },
+      },
+      color: {
+        default: null,
+        parseHTML: (element: HTMLElement) => element.style.color,
+        renderHTML: (attributes: Record<string, any>) => {
+          if (!attributes.color) return {}
+          return { style: `color: ${attributes.color}` }
+        },
+      },
+    }
+  },
+})
 
 const editor = new Editor({
   content: model.value || '',
   extensions: [
     StarterKit,
     Underline,
+    ExtTextStyle,
     TextAlign.configure({ types: ['heading', 'paragraph'] }),
     Placeholder.configure({ placeholder: '请输入公告内容...' }),
     Link.configure({ openOnClick: false }),
@@ -39,11 +70,15 @@ watch(
 
 onBeforeUnmount(() => editor.destroy())
 
-function handleAddLink() {
+async function handleAddLink() {
   const { from, to } = editor.state.selection
-  if (from === to) return
+  if (from === to) {
+    toast.warning('请选择需要设置超链接的文本')
+    return
+  }
 
-  const url = window.prompt('请输入链接地址')
+  const url = await setLinkConfirm({})
+
   if (!url) return
 
   editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
@@ -51,7 +86,7 @@ function handleAddLink() {
 </script>
 
 <template>
-  <div class="border rounded-lg overflow-hidden h-[600px] flex flex-col">
+  <div class="border rounded-lg overflow-hidden h-[400px] flex flex-col">
     <!-- 工具栏 -->
     <div class="flex items-center flex-wrap p-2 border-b bg-muted/30 shrink-0">
       <div class="space-x-0.5">
@@ -106,6 +141,14 @@ function handleAddLink() {
           <Icon icon="lucide:strikethrough" class="size-5" />
           <div class="x-tooltip-text top120">删除线</div>
         </button>
+        <button
+          class="x-tooltip hover:bg-muted rounded p-1.5"
+          :class="{ 'bg-muted': editor.isActive('codeBlock') }"
+          @click="editor.chain().focus().toggleCodeBlock().run()"
+        >
+          <Icon icon="lucide:code" class="size-5" />
+          <div class="x-tooltip-text top120">代码块</div>
+        </button>
       </div>
 
       <hr class="h-5 w-px mx-2 bg-border" />
@@ -134,6 +177,13 @@ function handleAddLink() {
         >
           <Icon icon="lucide:heading-3" class="size-5" />
           <div class="x-tooltip-text top120">标题3</div>
+        </button>
+        <button
+          class="x-tooltip hover:bg-muted rounded p-1.5"
+          @click="editor.chain().focus().unsetAllMarks().run()"
+        >
+          <Icon icon="lucide:eraser" class="size-5" />
+          <div class="x-tooltip-text top120">清除格式</div>
         </button>
       </div>
 
@@ -206,10 +256,14 @@ function handleAddLink() {
           <Icon icon="lucide:link" class="size-5" />
           <div class="x-tooltip-text top120">超链接</div>
         </button>
+        <FontSizePicker :editor="editor" />
+        <TextColorPicker :editor="editor" />
       </div>
     </div>
 
     <!-- 编辑区 -->
     <EditorContent :editor="editor" class="p-3 flex-1 overflow-y-auto" />
+
+    <SetLinkDialog />
   </div>
 </template>

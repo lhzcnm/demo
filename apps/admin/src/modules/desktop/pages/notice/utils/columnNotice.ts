@@ -1,5 +1,5 @@
 import type { Notice } from "@/inters/notice"
-import type { XColDef } from "@3un/ui"
+import { XTag, type XColDef } from "@3un/ui"
 import { h } from "vue"
 import NoticeAction from "../components/NoticeAction.vue"
 import NoticeStatusSwitch from "../components/NoticeStatusSwitch.vue"
@@ -20,16 +20,11 @@ export const columns: XColDef<Notice> = [
     minWidth: 158,
   },
   {
-    key: "titleEn",
-    title: "英文标题",
-    isDrag: true,
-    minWidth: 158,
-  },
-  {
     key: "content",
-    title: "中文内容",
+    title: "公告内容",
     isDrag: true,
-    width: 120,
+    align: 'center',
+    width: 80,
     render: (value, row) => {
       return h(NoticeContentPreview, {
         content: value as string,
@@ -38,10 +33,17 @@ export const columns: XColDef<Notice> = [
     }
   },
   {
+    key: "titleEn",
+    title: "英文标题",
+    isDrag: true,
+    minWidth: 158,
+  },
+  {
     key: "contentEn",
     title: "英文内容",
     isDrag: true,
-    width: 120,
+    align: 'center',
+    width: 80,
     render: (value, row) => {
       return h(NoticeContentPreview, {
         content: value as string,
@@ -51,10 +53,10 @@ export const columns: XColDef<Notice> = [
   },
   {
     key: "status",
-    title: "状态",
+    title: "开启公告",
     isFilter: true,
     isDrag: true,
-    width: 88,
+    width: 100,
     render: (_, row) => {
       return h(NoticeStatusSwitch, {
         row: row,
@@ -62,17 +64,29 @@ export const columns: XColDef<Notice> = [
     }
   },
   {
+    key: "publishStatus",
+    title: "发布状态",
+    isFilter: true,
+    isDrag: true,
+    width: 90,
+    render: (_, row) => {
+      return h(XTag, {
+        label: row.publishStatus == 0 ? '未发布' : '已发布',
+        color: row.publishStatus == 0 ? 'info' : 'success'
+      })
+    }
+  },
+  {
     key: "createTime",
     title: "创建时间",
     isDrag: true,
-    width: 208,
+    width: 130,
     render: (value) => (value as string) || "—",
   },
   {
     key: "updateTime",
     title: "更新时间",
-    isDrag: true,
-    width: 208,
+    width: 130,
     render: (value) => (value as string) || "—",
   },
   {

@@ -5,6 +5,7 @@ import type { WithId } from '@3un/shared'
 export const zNotice = z.object({
   id: z.number(),
   title: z.string(),
+  publishStatus: z.number(),
   titleEn: z.string(),
   content: z.string(),
   contentEn: z.string(),

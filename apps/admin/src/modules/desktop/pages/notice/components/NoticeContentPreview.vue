@@ -13,11 +13,11 @@ function open() {
 </script>
 
 <template>
-  <XButton label="查看文本" variant="ghost" size="sm" @click="open" />
+  <XButton label="查看内容" variant="ghost" class="w-full" size="sm" @click="open" />
   <XDialog v-model="visible" :title="props.title" ui-root="sm:max-w-2xl">
     <template #default>
       <div
-        class="tiptap text-sm leading-relaxed text-foreground"
+        class="tiptap text-sm leading-relaxed text-foreground h-[600px] overflow-auto"
         v-html="props.content"
       />
     </template>
