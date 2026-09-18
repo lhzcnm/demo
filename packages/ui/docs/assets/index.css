@@ -1,0 +1,109 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import '@/index.css';
+
+@layer base {
+  :root {
+    --header-height: 3.25rem;
+    --sidebar-width: 16rem;
+  }
+}
+
+@layer base {
+  :root {
+    --primary: 217.2 91.2% 59.8%; /* blue 500 */
+    --success: 160.1 84.1% 39.4%; /* emerald 500 */
+    --warning: 37.7 92.1% 50.2%; /* amber 500 */
+    --danger: 349.7 89.2% 60.2%; /* rose 500 */
+
+    --background: 0 0% 100%; /* white */
+    --foreground: 240 6% 10%; /* zinc 900 */
+
+    --card: 0 0% 100%; /* white */
+    --popover: 0 0% 100%; /* white */
+
+    --border: 240 6% 90%; /* zinc 200 */
+    --input: 240 6% 90%; /* zinc 200 */
+    --input-hover: 240 5% 84%; /* zinc 300 */
+
+    --muted: 240 5% 96%; /* zinc 100 */
+    --muted-foreground: 240 4% 46%; /* zinc 500 */
+
+    --accent: 240 4% 46%; /* zinc 500 */
+    --accent-foreground: 240 5% 96%; /* zinc 100 */
+
+    --label-text: 240 5% 26%; /* zinc 700 */
+  }
+
+  .dark {
+    --success: 161 94% 30%; /* emerald 600 */
+    --warning: 32 95% 44%; /* amber 600 */
+    --danger: 347 77% 50%; /* rose 600 */
+
+    --background: 240 10% 4%; /* zinc 950 */
+    --foreground: 240 6% 90%; /* zinc 200 */
+
+    --card: 240 6% 10%; /* zinc 900 */
+    --popover: 240 10% 4%; /* zinc 950 */
+
+    --border: 240 4% 18%;
+    --input: 240 4% 20%;
+    --input-hover: 240 5% 26%;
+
+    --muted: 240 4% 16%; /* zinc 800 */
+    --muted-foreground: 240 4% 46%; /* zinc 500 */
+
+    --accent: 240 5% 84%; /* zinc 300 */
+    --accent-foreground: 240 6% 10%; /* zinc 900 */
+
+    --label-text: 240 5% 84%; /* zinc 300 */
+  }
+}
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent
+}
+
+body {
+  @apply bg-background text-foreground;
+}
+
+/* Docs */
+.docs {
+  h1, h2, h3 {@apply font-mono font-bold;}
+  h1 {@apply text-4xl;}
+  h2 {@apply text-3xl;}
+  h3 {@apply mt-10 mb-3 text-2xl;}
+
+  p {@apply my-1.5;}
+  p > a {@apply text-primary;}
+  p > code {
+    @apply px-1 py-0.5 font-mono text-sm rounded;
+  }
+}
+
+/* Fonts */
+.noto-sans-sc {
+  font-family: "Noto Sans SC", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Scrollbar */
+@media (min-width: 640px) {
+  ::-webkit-scrollbar {
+    width: 5px
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 5px
+  }
+}

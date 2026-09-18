@@ -1,0 +1,57 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Rules
+
+## 项目介绍
+
+1. @3un/ui 是一个自研的 UI 组件库
+2. @3un/ui 的源码在 `src` 中
+3. @3un/ui 的文档在 `docs` 中
+
+## 项目技术架构
+
+1. 技术栈: vue3 + typescript + tailwindcss v3 + vite
+2. 使用 `@iconify/vue` 图标库，主要使用 `lucide` 图标集
+
+## 代码规范
+1. .vue 文件 总是使用 `<script setup lang="ts">`，并且位于在最前面
+2. 对于较长的 class, 使用 tailwindMerge 的 `twMerge` 或 `twJoin` 换行
+3. 请遵守我的代码风格(2 空格，无分号)
+4. 最多一个空行
+
+## 导入格式规范
+
+主要分三大部分：
+ - 手动导入的组件
+ - 库(ts类型导入的在最前)
+ - 其他本地导入(ts类型导入在最前)
+
+每部分的导入之间用一个空行分隔。
+
+例如：
+
+```ts
+import SelectService from '@desktop/components/SelectService.vue'
+import ImportPlane from './components/ImportPlane.vue'
+import MustRead from './components/MustRead.vue'
+
+import type { XTableColumn } from '@3un/ui'
+import { ORDER_STATUS, ORDER_VERIFY } from '@3un/utils'
+import { downloadURL } from '@3un/utils'
+import { toast } from 'vue-sonner'
+import { hash } from 'ohash'
+
+import type { Service } from '@/api/services'
+import type { Order, OrderTableView, OrderSubmitResult } from '@/api/orders'
+import { getDefaultColumns, mergeColumns } from './utils/columns'
+import { serviceApi } from '@/api/services'
+import { orderApi } from '@/api/orders'
+```
+
+注意: css 文件导入总是在最前面
+
+
+

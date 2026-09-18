@@ -1,0 +1,32 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client", "mdx"],
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    // Paths
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["docs/*"],
+    },
+  },
+  "files": [
+    "./auto-imports.d.ts",
+    "./components.d.ts",
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "docs/**/*.ts",
+    "docs/**/*.vue",
+    "docs/**/*.mdx",
+  ]
+}

@@ -234,30 +234,32 @@ onMounted(async () => {
     <div class="flex flex-1 min-h-0">
       <!-- 侧边栏 -->
       <aside ref="asideRef"
-        class="relative flex-shrink-0 overflow-hidden flex flex-col border-r border-slate-200 dark:border-slate-800 select-none transition-all duration-300"
-        :class="[sidebarExpanded ? 'w-40' : 'w-20', 'md:w-64']">
+        class="relative flex-shrink-0 overflow-hidden flex flex-col border-r border-slate-200 dark:border-slate-800 select-none transition-all duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+        :class="[sidebarExpanded ? 'w-40' : 'w-24', 'md:w-64']">
 
         <!-- Tab 切换 -->
         <div class="flex p-2 gap-1.5 border-b border-slate-100 dark:border-slate-800 mt-1">
           <button @click="handleFavoritesTabClick" :class="[
-            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all rounded-xl flex items-center justify-center gap-1.5 overflow-hidden',
+            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all duration-300 rounded-xl flex items-center justify-center overflow-hidden',
+            sidebarExpanded ? 'gap-1.5' : 'gap-0',
             showFavorites
               ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
               : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           ]">
             <Icon icon="tabler:star" class="w-3.5 h-3.5 flex-shrink-0" />
-            <span class="truncate" :class="sidebarExpanded ? 'inline' : 'hidden md:inline'">{{ localStore.localData['submit_old_FavoriteServices'] }}</span>
+            <span class="truncate transition-all duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] overflow-hidden whitespace-nowrap" :class="sidebarExpanded ? 'opacity-100 max-w-[5rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[5rem]'">{{ localStore.localData['submit_old_FavoriteServices'] }}</span>
             <div v-if="showFavorites" class="absolute inset-0 bg-white/10 blur-sm pointer-events-none"></div>
           </button>
 
           <button @click="showFavorites = false" :class="[
-            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all rounded-xl flex items-center justify-center gap-1.5 overflow-hidden',
+            'group relative flex-1 min-w-0 px-1 py-2 text-[9px] md:text-sm font-medium transition-all duration-300 rounded-xl flex items-center justify-center overflow-hidden',
+            sidebarExpanded ? 'gap-1.5' : 'gap-0',
             !showFavorites
               ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
               : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           ]">
             <Icon icon="tabler:layout-grid" class="w-3.5 h-3.5 flex-shrink-0" />
-            <span class="truncate" :class="sidebarExpanded ? 'inline' : 'hidden md:inline'">{{ localStore.localData['submit_old_allService'] }}</span>
+            <span class="truncate transition-all duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] overflow-hidden whitespace-nowrap" :class="sidebarExpanded ? 'opacity-100 max-w-[5rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[5rem]'">{{ localStore.localData['submit_old_allService'] }}</span>
             <div v-if="!showFavorites" class="absolute inset-0 bg-white/10 blur-sm pointer-events-none"></div>
           </button>
 
@@ -286,13 +288,14 @@ onMounted(async () => {
             <!-- 添加收藏按钮 -->
             <div class="sticky top-0 z-10 p-2  backdrop-blur-sm border-b border-slate-100 dark:border-slate-800">
               <button @click="showFavoritePicker = true"
-                class="group w-full flex items-center justify-center gap-1 p-2 rounded-xl text-[9px] md:text-sm font-medium bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-600 dark:text-blue-400 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 border border-blue-200/50 dark:border-blue-800/50 transition-all shadow-sm">
-                <Icon icon="tabler:plus" class="w-3.5 h-3.5 transition-transform group-hover:rotate-90 duration-300" />
-                {{ localStore.localData['submit_AddFavoriteService'] }}
+                class="group w-full flex items-center justify-center gap-1 p-2 rounded-xl text-[9px] md:text-sm font-medium bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-600 dark:text-blue-400 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 border border-blue-200/50 dark:border-blue-800/50 transition-all shadow-sm overflow-hidden">
+                <Icon icon="tabler:plus" class="w-3.5 h-3.5 transition-transform group-hover:rotate-90 duration-300 flex-shrink-0" />
+                <span class="truncate">{{ localStore.localData['submit_AddFavoriteService'] }}</span>
               </button>
             </div>
             <div v-for="service in favoriteServices" :key="service.id" @click="handleServiceSelect(service.id)" :class="[
-              'group relative flex items-center gap-1.5 px-3 py-2 cursor-pointer border-l-2 overflow-hidden transition-all duration-200',
+              'group relative flex items-center gap-1.5 py-2 cursor-pointer border-l-2 overflow-hidden transition-all duration-200',
+              sidebarExpanded ? 'px-3' : 'px-1.5',
               selectedServiceId === service.id
                 ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/10 text-blue-600 dark:text-blue-400'
                 : 'border-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
@@ -300,10 +303,10 @@ onMounted(async () => {
               <!-- 选中态左侧发光指示器 -->
               <div v-if="selectedServiceId === service.id"
                 class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
-              <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
-              <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
-              <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
-                :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price }}</span>
+              <span class="font-bold text-[9px] md:text-sm flex-shrink-0 transition-all duration-250 overflow-hidden" :class="sidebarExpanded ? 'opacity-100 max-w-[3rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[3rem]'">{{ service.id }}</span>
+              <span class="flex-1 min-w-0 text-[9px] md:text-sm truncate whitespace-nowrap">{{ service.title }}</span>
+              <span class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0 transition-all duration-250 overflow-hidden"
+                :class="[sidebarExpanded ? 'opacity-100 max-w-[4rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[4rem]', selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400']">{{ service.price }}</span>
             </div>
             <div v-if="favoriteServices.length === 0"
               class="flex flex-col items-center justify-center py-10 px-4 text-center">
@@ -326,10 +329,10 @@ onMounted(async () => {
                 ]">
                 <div v-if="selectedServiceId === service.id"
                   class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
-                <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
-                <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
-                <span v-show="sidebarExpanded" class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
-                  :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price
+                <span class="font-bold text-[9px] md:text-sm flex-shrink-0 transition-all duration-250 overflow-hidden" :class="sidebarExpanded ? 'opacity-100 max-w-[3rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[3rem]'">{{ service.id }}</span>
+                <span class="flex-1 min-w-0 text-[9px] md:text-sm truncate whitespace-nowrap">{{ service.title }}</span>
+                <span class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0 transition-all duration-250 overflow-hidden"
+                  :class="[sidebarExpanded ? 'opacity-100 max-w-[4rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[4rem]', selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400']">{{ service.price
                   }}</span>
               </div>
               <div v-if="searchFlattenedServices.length === 0"
@@ -346,8 +349,8 @@ onMounted(async () => {
                 <!-- 组标题 -->
                 <div @click="toggleGroup(group.id)"
                   class="group flex items-center justify-between p-2 text-blue-500 font-semibold tracking-wide border-b border-slate-100 dark:border-slate-800 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 select-none transition-colors">
-                  <span class="text-[9px] md:text-sm">{{ group.title }}</span>
-                  <div v-show="sidebarExpanded" class="flex items-center gap-1">
+                  <span class="text-[9px] md:text-sm truncate min-w-0">{{ group.title }}</span>
+                  <div class="flex items-center gap-1 transition-all duration-250 overflow-hidden" :class="sidebarExpanded ? 'opacity-100 max-w-[3rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[3rem]'">
                     <span class="text-[9px] md:text-xs text-slate-400 dark:text-slate-500">{{ group.children.length
                       }}</span>
                     <Icon :icon="expandedGroups.has(group.id) ? 'tabler:chevron-down' : 'tabler:chevron-right'"
@@ -366,11 +369,10 @@ onMounted(async () => {
                     ]">
                     <div v-if="selectedServiceId === service.id"
                       class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 shadow-md shadow-blue-500/50"></div>
-                    <span v-show="sidebarExpanded" class="font-bold text-[9px] md:text-sm flex-shrink-0">{{ service.id }}</span>
-                    <span class="flex-1 flex-shrink-0 text-[9px] md:text-sm">{{ service.title }}</span>
-                    <span v-show="sidebarExpanded"
-                      class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0"
-                      :class="selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400'">{{ service.price
+                    <span class="font-bold text-[9px] md:text-sm flex-shrink-0 transition-all duration-250 overflow-hidden" :class="sidebarExpanded ? 'opacity-100 max-w-[3rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[3rem]'">{{ service.id }}</span>
+                    <span class="flex-1 min-w-0 text-[9px] md:text-sm truncate whitespace-nowrap">{{ service.title }}</span>
+                    <span class="whitespace-nowrap text-[9px] md:text-sm font-medium flex-shrink-0 transition-all duration-250 overflow-hidden"
+                      :class="[sidebarExpanded ? 'opacity-100 max-w-[4rem]' : 'opacity-0 max-w-0 md:opacity-100 md:max-w-[4rem]', selectedServiceId === service.id ? 'text-blue-500' : 'text-red-400']">{{ service.price
                       }}</span>
                   </div>
                 </template>

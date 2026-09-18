@@ -1,0 +1,175 @@
+@layer base {
+  :root {
+    --primary: 217.2 91.2% 59.8%; /* blue 500 */
+    --success: 160.1 84.1% 39.4%; /* emerald 500 */
+    --warning: 37.7 92.1% 50.2%; /* amber 500 */
+    --danger: 349.7 89.2% 60.2%; /* rose 500 */
+
+    --background: 0 0% 100%; /* white */
+    --foreground: 240 6% 10%; /* zinc 900 */
+
+    --card: 0 0% 100%; /* white */
+    --popover: 0 0% 100%; /* white */
+
+    --border: 240 6% 90%; /* zinc 200 */
+    --input: 240 6% 90%; /* zinc 200 */
+    --input-hover: 240 5% 84%; /* zinc 300 */
+
+    --muted: 240 5% 96%; /* zinc 100 */
+    --muted-foreground: 240 4% 46%; /* zinc 500 */
+
+    --accent: 240 4% 46%; /* zinc 500 */
+    --accent-foreground: 240 5% 96%; /* zinc 100 */
+
+    --label-text: 240 5% 26%; /* zinc 700 */
+  }
+
+  .dark {
+    --success: 161 94% 30%; /* emerald 600 */
+    --warning: 32 95% 44%; /* amber 600 */
+    --danger: 347 77% 50%; /* rose 600 */
+
+    --background: 240 10% 4%; /* zinc 950 */
+    --foreground: 240 6% 90%; /* zinc 200 */
+
+    --card: 240 6% 10%; /* zinc 900 */
+    --popover: 240 10% 4%; /* zinc 950 */
+
+    --border: 240 4% 18%;
+    --input: 240 4% 20%;
+    --input-hover: 240 5% 26%;
+
+    --muted: 240 4% 16%; /* zinc 800 */
+    --muted-foreground: 240 4% 46%; /* zinc 500 */
+
+    --accent: 240 5% 84%; /* zinc 300 */
+    --accent-foreground: 240 6% 10%; /* zinc 900 */
+
+    --label-text: 240 5% 84%; /* zinc 300 */
+  }
+}
+
+@layer components {
+  textarea::placeholder, input::placeholder {
+    @apply text-muted-foreground;
+  }
+}
+
+/* 弹窗动画(XDialog) */
+.x-dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  transform: scale(1);
+  transition: all 0.3s ease;
+}
+.x-dialog-enter-from,
+.x-dialog-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.x-dialog-enter-active,
+.x-dialog-leave-active {
+  transition: all 0.3s ease;
+}
+
+.x-dialog-header {
+  user-select: none;
+  cursor: move;
+}
+
+/* 抖动动画(XDialog) */
+.x-shake-animation {
+  animation: x-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+@keyframes x-shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+/* Button Icon Animation */
+.x-icon-enter-active,
+.x-icon-leave-active {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.x-icon-enter-from,
+.x-icon-leave-to {
+  opacity: 0;
+  transform: scale(0.7) rotate(-10deg);
+}
+.x-icon-enter-to,
+.x-icon-leave-from {
+  opacity: 1;
+  transform: scale(1) rotate(0);
+}
+
+/* Popover 动画 */
+.x-popover-enter-active,
+.x-popover-leave-active {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: var(--x-popover-origin, top);
+}
+.x-popover-enter-from,
+.x-popover-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.x-popover-enter-to,
+.x-popover-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Drawer */
+.x-drawer-left-enter-active,
+.x-drawer-left-leave-active,
+.x-drawer-right-enter-active,
+.x-drawer-right-leave-active,
+.x-drawer-top-enter-active,
+.x-drawer-top-leave-active,
+.x-drawer-bottom-enter-active,
+.x-drawer-bottom-leave-active {
+  transition: transform 0.3s ease;
+}
+.x-drawer-left-enter-from,
+.x-drawer-left-leave-to {
+  transform: translateX(-100%);
+}
+.x-drawer-right-enter-from,
+.x-drawer-right-leave-to {
+  transform: translateX(100%);
+}
+.x-drawer-top-enter-from,
+.x-drawer-top-leave-to {
+  transform: translateY(-100%);
+}
+.x-drawer-bottom-enter-from,
+.x-drawer-bottom-leave-to {
+  transform: translateY(100%);
+}
+
+/* Table Loading Animation */
+.x-animation-slide {
+  animation: x-slide 1.5s ease-in-out infinite;
+}
+@keyframes x-slide {
+  0% { 
+    transform: translateX(-100%); 
+  }
+  100% { 
+    transform: translateX(300%); 
+  }
+}

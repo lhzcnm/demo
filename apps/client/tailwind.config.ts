@@ -54,8 +54,8 @@ export default withTV({
         'scale-check': 'scale-check 0.5s ease-out forwards',
         'circle-expand': 'circle-expand 0.8s ease-out forwards',
         'fade-up': 'fade-up 0.5s ease-out 0.3s forwards',
-        'fadeIn': 'fadeIn 0.4s ease-in-out',
-        'arrow-move': 'arrow 0.8s ease-in-out infinite'
+        'fadeIn': 'fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'arrow-move': 'arrow 0.8s cubic-bezier(0.25, 1, 0.5, 1) infinite'
       },
     },
   },

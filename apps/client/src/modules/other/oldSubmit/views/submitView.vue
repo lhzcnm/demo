@@ -1362,7 +1362,7 @@ const btnArr = computed(() => [
 <template>
   <div class="p-2 pt-0 h-full  pb-4 flex flex-col">
     <!-- 服务信息及操作栏 -->
-    <section class=" whitespace-nowrap  flex flex-col items-start justify-start space-y-1.5 flex-wrap mb-1">
+    <section class="whitespace-nowrap flex flex-col items-start justify-start space-y-1.5 mb-1">
       <!-- 服务信息 -->
       <div class="flex justify-start items-center select-none w-full overflow-x-auto scroll_hidden">
         <div v-if="selService" class="flex items-center gap-2 pt-1 text-[9px] md:text-md text-muted-foreground">
@@ -1400,7 +1400,7 @@ const btnArr = computed(() => [
       </div>
 
       <!-- 操作按钮组 -->
-      <div class="flex gap-1 text-[9px] md:text-sm flex-wrap select-none w-full overflow-x-auto scroll_hidden">
+      <div class="flex gap-1 text-[9px] md:text-sm flex-nowrap select-none w-full overflow-x-auto scroll_hidden">
         <ImportPlane :selected-id="store.selectId" @submit="handleImport" />
 
         <XButton v-for="item in btnArr" :key="item.label" :size="ua.isMobile ? 'sm' : 'md'" :color="item.color as any"

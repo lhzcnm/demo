@@ -1,98 +1,108 @@
-/* 动画 */
+/* =========================================================
+   Motion language – no linear ease-in-out
+   Prefer: ease-out, spring, expo
+   ========================================================= */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Bounce */
 .x-animate-bounce {
   animation: bounce 2s infinite;
 }
 @keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-/* 淡入淡出 */
+/* Fade */
 .fade-in-enter-active,
 .fade-in-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s var(--ease-out-quart);
 }
 .fade-in-enter-from,
 .fade-in-leave-to {
   opacity: 0;
 }
 
-/* 缩放淡入 */
+/* Scale fade – soft spring feel */
 .fade-in-scale-enter-active {
-  @apply transition duration-300 ease-out;
+  transition: all 0.35s var(--ease-out-expo);
 }
 .fade-in-scale-leave-active {
-  @apply transition duration-200 ease-in;
+  transition: all 0.22s var(--ease-out-quart);
 }
 .fade-in-scale-enter-from,
 .fade-in-scale-leave-to {
-  @apply opacity-0 scale-95;
+  opacity: 0;
+  transform: scale(0.94);
 }
 .fade-in-scale-enter-to,
 .fade-in-scale-leave-from {
-  @apply opacity-100 scale-100;
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* 底部滑入 */
+/* Bottom slide */
 .slide-bottom-enter-active,
 .slide-bottom-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.35s var(--ease-out-expo);
 }
 .slide-bottom-enter-from,
 .slide-bottom-leave-to {
   transform: translateY(100%);
 }
 
-/* 右侧滑入 */
+/* Right slide */
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.35s var(--ease-out-expo);
 }
 .slide-right-enter-from,
 .slide-right-leave-to {
   transform: translateX(100%);
 }
 
-/* 左侧滑入 */
+/* Left slide */
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.35s var(--ease-out-expo);
 }
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(-100%);
 }
 
-/* 垂直滑动 */
+/* Vertical slide */
 .slide-vertical-enter-active,
 .slide-vertical-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.32s var(--ease-out-expo);
 }
 .slide-vertical-enter-from {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(24px);
 }
 .slide-vertical-leave-to {
   opacity: 0;
-  transform: translateY(-30px);
+  transform: translateY(-24px);
 }
 .slide-vertical-move {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s var(--ease-out-quart);
 }
 
-/* fade scale */
+/* Fade scale */
 .fade-scale-enter-active,
 .fade-scale-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-out-expo);
 }
 .fade-scale-enter-from,
 .fade-scale-leave-to {
   opacity: 0;
-  transform: scale(0.75);
+  transform: scale(0.92);
 }
 .fade-scale-enter-to,
 .fade-scale-leave-from {
@@ -100,7 +110,7 @@
   transform: scale(1);
 }
 
-/* 流光 */
+/* Flow light – warmer */
 .flow-light-effect {
   position: relative;
   height: 2px;
@@ -109,19 +119,15 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.6),
+    hsl(24 95% 60% / 0.55),
     transparent
   );
   width: 30%;
   height: 100%;
-  animation: flow 2s infinite linear;
+  animation: flow 2.2s infinite linear;
   transform: translateX(-100%);
 }
 @keyframes flow {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(400%);
-  }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
 }
